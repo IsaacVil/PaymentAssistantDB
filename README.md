@@ -1,4 +1,4 @@
-# PAYMENTASSISTANT DATA BASE MADE IN MYSQL
+# PAYMENT ASSISTANT DATA BASE MADE IN MYSQL
 
 ## About the Project
 This data base proyect was developed as part of the **Data Bases I** course at the **Technological Institute of Costa Rica (TEC).** The project focuses on implementing advanced **Data Bases, OTHER THINGS.**  
