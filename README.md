@@ -29,8 +29,8 @@ Any questions or inquiries about the inner workings of the project can be direct
 - Permissions
 - Media
   - Type
-    -Name
-    -FormatType
+    - Name
+    - FormatType
   - ...
 - Logs
 - Language
