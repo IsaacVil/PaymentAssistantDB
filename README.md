@@ -6,7 +6,12 @@ The data base was a collaborative effort between **Isaac Villalobos** and **Carl
 Any questions or inquiries about the inner workings of the project can be directed to my personal email: IsaacVillalobosB@gmail.com.
 
 ## Entity List
-- People
+- Roles
+  - Permissions
+  - Enable
+  - Deleted
+  - Last Update
+  - Checksum
 - Users
   - Username
   - First Name
@@ -16,22 +21,45 @@ Any questions or inquiries about the inner workings of the project can be direct
   - Password
   - Verified
   - Enable
-  - CreationDate
-  - LastLogin
+  - Creation Date
+  - Last Login
 - Modules
 - Subscriptions
   - Price
   - Features
-  - StartDate
-  - EndDate
-  - AutoRenew
+  - Start Date
+  - End Date
+  - Auto Renew
   - Enable
 - Permissions
 - Media
   - Type
     - Name
-    - FormatType
-  - ...
+    - Format Type
+  - Status
 - Logs
+  - Type
+  - Source
 - Language
 - Translations
+- Schedule
+- Payments
+  - Auth (Sms, Email)
+  - Amount
+  - Discount
+  - error
+  - description
+- Payment Methods
+  - Name
+  - Api Url
+  - Secret Key
+  - Key
+  - Mask Account
+  - Token
+  - Experation Token Date
+- Currency
+  - name
+  - country
+  - symbol
+- Exchange Rates
+- Transactions
