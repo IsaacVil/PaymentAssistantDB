@@ -11,7 +11,6 @@ Any questions or inquiries about the inner workings of the project can be direct
   - Enable
   - Deleted
   - Last Update
-  - Checksum
 - Users
   - Username
   - First Name
@@ -63,3 +62,6 @@ Any questions or inquiries about the inner workings of the project can be direct
   - symbol
 - Exchange Rates
 - Transactions
+  - Reference
+  - Amount
+  - 
