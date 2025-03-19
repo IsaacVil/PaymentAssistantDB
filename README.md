@@ -86,7 +86,7 @@ Any questions or inquiries about the inner workings of the project can be direct
 ![image](https://github.com/user-attachments/assets/0e5e1788-64af-4602-a4d0-b25417f1f2e6)
 - Microsoft Outlook Calendar and Apple Calendar both worked as a reference of a working schedule system for a data base. 
 ![image](https://github.com/user-attachments/assets/9e1d8c28-fcd0-4138-8a38-c72c662eaff4)
-![Apple](https://github.com/user-attachments/assets/9d82d787-492f-41a8-ba26-92cd815039d8)
+![apple](https://github.com/user-attachments/assets/d30ab0da-9430-46d0-93a4-8c69a0525633)
 - From Netflix subscription model we took the way they charge monthly and their cancelation method and from Office we took the optional yearly subscriptions (less expensive but they have to pay up-front). (links: https://www.netflix.com/, https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products?tab=1&OCID=cmmruikv4ct).
 ![image](https://github.com/user-attachments/assets/59e45e44-7365-42b5-870f-308716247ebb)
 ![image](https://github.com/user-attachments/assets/9e1f32ba-f744-40fc-9b00-3a79b5a5969f)
