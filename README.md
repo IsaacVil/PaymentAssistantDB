@@ -23,9 +23,11 @@ Any questions or inquiries about the inner workings of the project can be direct
   - Creation Date
   - Last Login
 - Modules
-- Subscriptions
+- Plan
   - Price
   - Features
+- Subscriptions
+  - Price
   - Start Date
   - End Date
   - Auto Renew
@@ -64,4 +66,12 @@ Any questions or inquiries about the inner workings of the project can be direct
 - Transactions
   - Reference
   - Amount
-  - 
+  - Date time
+  - Office time
+  - Description
+  - Type (Payment, Refund, ...)
+  - Subtypes (Subscriptions, Claim Approve, ...)
+- Contact Info
+  - Value
+  - Last Update
+  - Type of Contact
