@@ -5,7 +5,7 @@ This data base proyect was developed as part of the **Data Bases I** course at t
 The data base was a collaborative effort between **Isaac Villalobos** and **Carlos Ávalos**, showcasing our knowledge in data bases and the application of them in real-world scenarios.  
 Any questions or inquiries about the inner workings of the project can be directed to my personal email: IsaacVillalobosB@gmail.com.
 
-## Entity List
+## Entity List (Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf)
 - Roles
   - Permissions
   - Enable
@@ -87,6 +87,11 @@ Any questions or inquiries about the inner workings of the project can be direct
   - Cue points
   - Transcriptions
 - Ai for Audio Processing (AWS Amazon)
+- Ai Interaction (OpenAi)
+  -Events
+  -Data Collection
+    -Data type
+-Cloud Services for Audio Processing (AWS Amazon, Azure OpenAI)
 ## Documentation for Reference in the Making of this Data Base
 - Stripe was our principal source of inspiration for the payment methods section, we took from stripe the tokenization and the secret key both are really useful at keeping our data base secure and our users safety. (Link: https://docs.stripe.com/api/tokens)
 ![image](https://github.com/user-attachments/assets/0e5e1788-64af-4602-a4d0-b25417f1f2e6)
