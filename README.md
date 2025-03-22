@@ -88,10 +88,10 @@ Any questions or inquiries about the inner workings of the project can be direct
   - Transcriptions
 - Ai for Audio Processing (AWS Amazon)
 - Ai Interaction (OpenAi)
-  -Events
-  -Data Collection
-    -Data type
--Cloud Services for Audio Processing (AWS Amazon, Azure OpenAI)
+  - Events
+  - Data Collection
+    - Data type
+- Cloud Services for Audio Processing (AWS Amazon, Azure OpenAI)
 ## Documentation for Reference in the Making of this Data Base
 - Stripe was our principal source of inspiration for the payment methods section, we took from stripe the tokenization and the secret key both are really useful at keeping our data base secure and our users safety. (Link: https://docs.stripe.com/api/tokens)
 ![image](https://github.com/user-attachments/assets/0e5e1788-64af-4602-a4d0-b25417f1f2e6)
