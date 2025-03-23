@@ -67,6 +67,7 @@ DELIMITER ;
 CALL insertmodules();
 SELECT * FROM paya_modules;
 -- INSERT CURRENCIES --------------------------------------------------------------------------------------------------------------------------
+select * from paya_currencies;
 DELIMITER //
 CREATE PROCEDURE insertcurrencies()
 BEGIN
@@ -82,7 +83,8 @@ BEGIN
 		('Australian Dollar', 'AUD', 'Australia', 'A$'),
 		('Indian Rupee', 'INR', 'India', '₹'),
 		('Chinese Yuan', 'CNY', 'China', '¥'),
-		('Brazilian Real', 'BRL', 'Brazil', 'R$');
+		('Brazilian Real', 'BRL', 'Brazil', 'R$'),
+        ('Costa Rican Colon', 'CRC', 'Costa Rica', '₡');
 END //
 DELIMITER ;
 CALL insertcurrencies();
