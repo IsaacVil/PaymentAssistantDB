@@ -1,6 +1,8 @@
 DROP PROCEDURE IF EXISTS insertusers;
 DROP PROCEDURE IF EXISTS insertmodules;
 DROP PROCEDURE IF EXISTS insertplan;
+DROP PROCEDURE IF EXISTS insertcurrencies;
+DROP PROCEDURE IF EXISTS insertsubscriptions;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -58,6 +60,49 @@ DELIMITER ;
 
 CALL insertmodules();
 SELECT * FROM paya_modules;
+-- INSERT CURRENCIES --------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertcurrencies()
+BEGIN
+        INSERT INTO `PayAssistantDB`.`paya_currencies` 
+        (`name`, `acronym`, `country`, `symbol`)
+        VALUES 
+		('United States Dollar', 'USD', 'United States', '$'),
+		('Euro', 'EUR', 'European Union', '€'),
+		('British Pound', 'GBP', 'United Kingdom', '£'),
+		('Japanese Yen', 'JPY', 'Japan', '¥'),
+		('Swiss Franc', 'CHF', 'Switzerland', 'Fr'),
+		('Canadian Dollar', 'CAD', 'Canada', 'C$'),
+		('Australian Dollar', 'AUD', 'Australia', 'A$'),
+		('Indian Rupee', 'INR', 'India', '₹'),
+		('Chinese Yuan', 'CNY', 'China', '¥'),
+		('Brazilian Real', 'BRL', 'Brazil', 'R$');
+END //
+DELIMITER ;
+CALL insertcurrencies();
+SELECT * FROM paya_currencies;
+-- INSERT SUBSCRIPTIONS ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertsubscriptions()
+BEGIN
+        INSERT INTO `PayAssistantDB`.`paya_subscriptions` 
+        (`description`, `logoURL`, `startdate`, `enddate`, `autorenew`)
+        VALUES 
+		('No Schedual Limitations', 'https://example.com/logo1.png', '2024-03-15 12:40:00', '2025-03-15 00:00:00', 1),
+		('Premium Subscription', 'https://example.com/logo2.png', '2024-04-10 10:30:00', '2025-04-10 00:00:00', 0),
+		('Exclusive Deals', 'https://example.com/logo3.png', '2024-05-05 00:40:00', '2025-05-05 00:00:00', 1),
+		('VIP Benefits', 'https://example.com/logo4.png', '2024-06-20 06:20:00', '2025-06-20 00:00:00', 0),
+		('Special Discounts', 'https://example.com/logo5.png', '2024-07-25 10:03:00', '2025-07-25 00:00:00', 1),
+		('Exclusive Content Access', 'https://example.com/logo6.png', '2024-08-13 01:01:10', '2025-08-13 00:00:00', 0),
+		('Anual Subscription', 'https://example.com/logo7.png', '2024-09-30 20:03:00', '2025-09-30 00:00:00', 1),
+		('Premium Bank Plan', 'https://example.com/logo8.png', '2024-10-05 20:00:02', '2025-10-05 00:00:00', 0),
+		('Unlimited Transcriptions', 'https://example.com/logo9.png', '2024-11-18 02:33:00', '2025-11-18 00:00:00', 1),
+		('NO ADS', 'https://example.com/logo10.png', '2024-12-02 00:00:00', '2025-12-02 06:30:00', 0);
+END //
+DELIMITER ;
+CALL insertsubscriptions();
+SELECT * FROM paya_subscriptions;
+
 -- INSERT PLANS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertplan()
@@ -66,25 +111,19 @@ BEGIN
     DECLARE plansselled INT DEFAULT 100;
     DECLARE user_id INT;
     DECLARE creation_date DATETIME;
-    DECLARE plan_price_id INT DEFAULT 1; -- Asumimos un `planpriceid` de ejemplo
+    DECLARE plan_price_id INT DEFAULT 1; -- CAMBIARLOOOOOOOOOOOOOO
     DECLARE random_date DATETIME;
 	DECLARE enablebit BIT;
     
-    -- Loop para insertar múltiples registros
     WHILE i < plansselled DO
-        -- Seleccionar un `userid` aleatorio de la tabla `paya_users` y su fecha de creación
         SELECT `userid`, `creationdate` INTO user_id, creation_date
-        FROM `PayAssistantDB`.`paya_users`
-        ORDER BY RAND() LIMIT 1;
-
-        -- Generar una fecha aleatoria entre `creation_date` y `NOW()`
+        FROM `PayAssistantDB`.`paya_users` ORDER BY RAND() LIMIT 1;
         SET random_date = DATE_ADD(creation_date, INTERVAL FLOOR(RAND() * (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(creation_date))) SECOND);
         SET enablebit = IF(RAND() < 0.3, 0, 1); 
         INSERT INTO `PayAssistantDB`.`paya_plans` 
         (`adquisition`, `enabled`, `userid`, `planpriceid`)
         VALUES 
-        (random_date, enablebit, user_id, plan_price_id);  -- Asignando valores de ejemplo
-
+        (random_date, enablebit, user_id, plan_price_id);
         SET i = i + 1;
     END WHILE;
 END //
