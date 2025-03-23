@@ -442,6 +442,28 @@ DELIMITER ;
 CALL inserttransactions();
 SELECT * FROM paya_transactions;
 
+-- INSERT LANGUAGES  ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertlanguages()
+BEGIN
+    INSERT INTO `PayAssistantDB`.`paya_languages` 
+    (`languagename`, `enable`, `culture`)
+    VALUES 
+    ('English', 1, 'en-US'),
+    ('Spanish', 1, 'es-ES'),
+    ('French', 1, 'fr-FR'),
+    ('German', 1, 'de-DE'),
+    ('Chinese', 1, 'zh-CN'),
+    ('Japanese', 1, 'ja-JP'),
+    ('Portuguese', 1, 'pt-BR'),
+    ('Italian', 1, 'it-IT'),
+    ('Russian', 1, 'ru-RU'),
+    ('Arabic', 1, 'ar-SA');
+END //
+DELIMITER ;
+CALL insertlanguages();
+SELECT * FROM paya_languages;
+
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
 -- TRUNCATE TABLE paya_modules;
