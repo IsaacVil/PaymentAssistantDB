@@ -241,7 +241,7 @@ BEGIN
     DECLARE plansselled INT DEFAULT 100;
     DECLARE user_id INT;
     DECLARE creation_date DATETIME;
-    DECLARE plan_price_id INT; -- CAMBIARLOOOOOOOOOOOOOO
+    DECLARE plan_price_id INT;
     DECLARE random_date DATETIME;
 	DECLARE enablebit BIT;
     
