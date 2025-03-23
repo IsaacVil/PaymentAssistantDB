@@ -1,5 +1,6 @@
 DROP PROCEDURE IF EXISTS insertusers;
 DROP PROCEDURE IF EXISTS insertmodules;
+DROP PROCEDURE IF EXISTS insertplan;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -41,7 +42,6 @@ BEGIN
     DROP TEMPORARY TABLE IF EXISTS apellidos;
 END //
 DELIMITER ;
-DELIMITER // ;
 CALL insertusers();
 SELECT * FROM paya_users;
 -- INSERT MODULES ------------------------------------------------------------------------------------------------------------------------
@@ -59,6 +59,40 @@ DELIMITER ;
 CALL insertmodules();
 SELECT * FROM paya_modules;
 -- INSERT PLANS ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertplan()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE plansselled INT DEFAULT 100;
+    DECLARE user_id INT;
+    DECLARE creation_date DATETIME;
+    DECLARE plan_price_id INT DEFAULT 1; -- Asumimos un `planpriceid` de ejemplo
+    DECLARE random_date DATETIME;
+	DECLARE enablebit BIT;
+    
+    -- Loop para insertar múltiples registros
+    WHILE i < plansselled DO
+        -- Seleccionar un `userid` aleatorio de la tabla `paya_users` y su fecha de creación
+        SELECT `userid`, `creationdate` INTO user_id, creation_date
+        FROM `PayAssistantDB`.`paya_users`
+        ORDER BY RAND() LIMIT 1;
+
+        -- Generar una fecha aleatoria entre `creation_date` y `NOW()`
+        SET random_date = DATE_ADD(creation_date, INTERVAL FLOOR(RAND() * (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(creation_date))) SECOND);
+        SET enablebit = IF(RAND() < 0.3, 0, 1); 
+        INSERT INTO `PayAssistantDB`.`paya_plans` 
+        (`adquisition`, `enabled`, `userid`, `planpriceid`)
+        VALUES 
+        (random_date, enablebit, user_id, plan_price_id);  -- Asignando valores de ejemplo
+
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+CALL insertplan();
+SELECT * FROM paya_plans;
+
+
 
 -- SELECT * from paya_users;
 -- SELECT COUNT(*) AS enables_en_1 FROM paya_users WHERE enable = 1;

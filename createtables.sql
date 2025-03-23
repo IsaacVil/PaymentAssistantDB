@@ -759,11 +759,9 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_plans` (
   `enabled` BIT(1) NOT NULL,
   `userid` INT NOT NULL,
   `planpriceid` INT NOT NULL,
-  `scheduledetailsid` INT NOT NULL,
   PRIMARY KEY (`planid`),
   INDEX `fk_paya_plans_paya_users1_idx` (`userid` ASC) VISIBLE,
   INDEX `fk_paya_plans_paya_planprices1_idx` (`planpriceid` ASC) VISIBLE,
-  INDEX `fk_paya_plans_paya_scheduledetails1_idx` (`scheduledetailsid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_plans_paya_users1`
     FOREIGN KEY (`userid`)
     REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
@@ -773,14 +771,9 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_plans` (
     FOREIGN KEY (`planpriceid`)
     REFERENCES `PayAssistantDB`.`paya_planprices` (`planpriceid`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_paya_plans_paya_scheduledetails1`
-    FOREIGN KEY (`scheduledetailsid`)
-    REFERENCES `PayAssistantDB`.`paya_scheduledetails` (`scheduledetailsid`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
+)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `PayAssistantDB`.`paya_planfeatures`
