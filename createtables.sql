@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_currencies` (
   `name` VARCHAR(50) NOT NULL,
   `acronym` VARCHAR(15) NOT NULL,
   `country` VARCHAR(45) NOT NULL,
-  `symbol` VARCHAR(1) NOT NULL,
+  `symbol` VARCHAR(5) NOT NULL,
   PRIMARY KEY (`currencyid`))
 ENGINE = InnoDB;
 
@@ -374,7 +374,7 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_paymentmethods` (
   `apiurl` VARCHAR(180) NOT NULL,
   `secretkey` VARBINARY(250) NOT NULL,
   `key` VARBINARY(250) NOT NULL,
-  `logoiconurl` VARCHAR(50) NOT NULL,
+  `logoiconurl` VARCHAR(250) NOT NULL,
   `enable` BIT(1) NOT NULL,
   PRIMARY KEY (`paymentmethodsid`))
 ENGINE = InnoDB;

@@ -381,7 +381,7 @@ BEGIN
         SET random_auth = sha2(CONCAT('auth_code_', FLOOR(RAND() * 1000000)), 256);
         SET random_reference = CONCAT('REF', FLOOR(RAND() * 100000));
         SET random_chargetoken = sha2(CONCAT('chargetoken_', FLOOR(RAND() * 1000000)), 256);
-        SET random_error = IF(RAND() < 0.8, NULL, 'Error Message'); 
+        SET random_error = IF(RAND() < 0.8, '', 'Error Message'); 
         SET random_date = DATE_ADD(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY);
         SET random_result = IF(random_error IS NULL, 'Success', 'Error');
 
