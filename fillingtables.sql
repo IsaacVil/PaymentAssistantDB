@@ -1,6 +1,7 @@
 DROP PROCEDURE IF EXISTS insertusers;
 DROP PROCEDURE IF EXISTS insertmodules;
 DROP PROCEDURE IF EXISTS insertplan;
+DROP PROCEDURE IF EXISTS insertsplanprices;
 DROP PROCEDURE IF EXISTS insertcurrencies;
 DROP PROCEDURE IF EXISTS insertsubscriptions;
 DROP PROCEDURE IF EXISTS insertschedules;
@@ -11,6 +12,7 @@ DROP PROCEDURE IF EXISTS insertavailablemethods;
 DROP PROCEDURE IF EXISTS insertpayments;
 DROP PROCEDURE IF EXISTS inserttransactiontypes;
 DROP PROCEDURE IF EXISTS inserttransactionsubtypes;
+DROP PROCEDURE IF EXISTS inserttransactions;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -99,18 +101,13 @@ BEGIN
     DECLARE end_date DATETIME;
     DECLARE current_rate BIT;
     SELECT COUNT(*) INTO numcurrencies FROM `PayAssistantDB`.`paya_currencies`;
-
     WHILE i < (numcurrencies * (numcurrencies - 1)) DO
-        -- Seleccionar la moneda fuente (source) de la tabla de monedas
-        SELECT `currencyid` INTO currency_source_id
-        FROM `PayAssistantDB`.`paya_currencies`
+        -- Seleccionar la moneda fuente (source) de la tabla de currencies
+        SELECT `currencyid` INTO currency_source_id FROM `PayAssistantDB`.`paya_currencies`
         ORDER BY RAND() LIMIT 1;
-
-        -- Seleccionar la moneda destino (destiny) de la tabla de monedas (debe ser distinta de la fuente)
-        SELECT `currencyid` INTO currency_destiny_id
-        FROM `PayAssistantDB`.`paya_currencies`
-        WHERE `currencyid` != currency_source_id
-        ORDER BY RAND() LIMIT 1;
+        -- Seleccionar la moneda destino (destiny) de la tabla de currencies (debe ser distinta de la fuente)
+        SELECT `currencyid` INTO currency_destiny_id FROM `PayAssistantDB`.`paya_currencies`
+        WHERE `currencyid` != currency_source_id ORDER BY RAND() LIMIT 1;
         SET start_date = DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY);
         SET end_date = DATE_ADD(start_date, INTERVAL FLOOR(RAND() * 30) DAY);
         SET current_rate = IF(RAND() < 0.5, 1, 0);  
@@ -122,7 +119,6 @@ BEGIN
     END WHILE;
 END //
 DELIMITER ;
-
 CALL insert_exchangerates();
 SELECT * FROM paya_exchangerates;
 -- INSERT SUBSCRIPTIONS ------------------------------------------------------------------------------------------------------------------------
@@ -172,9 +168,7 @@ BEGIN
     DECLARE i INT DEFAULT 0;
     DECLARE random_scheduleid INT;
     DECLARE deletedbit BIT;
-    -- Insertar 20 registros con valores aleatorios
     WHILE i < 20 DO
-        -- Obtener un `scheduleid` aleatorio de la tabla `paya_schedules`
         SELECT scheduleid INTO random_scheduleid 
         FROM `PayAssistantDB`.`paya_schedules` 
         ORDER BY RAND() 
@@ -183,10 +177,8 @@ BEGIN
         INSERT INTO `PayAssistantDB`.`paya_scheduledetails` 
         (`deleted`, `basedate`, `datepart`, `lastexecution`, `nextexecution`, `scheduleid`)
         VALUES
-        (deletedbit, 
-            DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY),
-            IF(FLOOR(RAND() * 2) = 0, 'MM', 'YY'),
-            DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY),DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY),random_scheduleid);
+        (deletedbit, DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY), IF(FLOOR(RAND() * 2) = 0, 'MM', 'YY'), DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY),
+        DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), random_scheduleid);
         SET i = i + 1;
     END WHILE;
 END //
@@ -206,15 +198,9 @@ BEGIN
     DECLARE random_postdate DATETIME;
     DECLARE random_enddate DATETIME;
     WHILE i < 20 DO
-        SELECT subscriptionid INTO random_subscriptionid 
-        FROM `PayAssistantDB`.`paya_subscriptions` ORDER BY RAND() LIMIT 1;
-        
-        SELECT currencyid INTO random_currencyid 
-        FROM `PayAssistantDB`.`paya_currencies` ORDER BY RAND() LIMIT 1;
-        
-        SELECT scheduledetailsid INTO random_scheduledetailsid 
-        FROM `PayAssistantDB`.`paya_scheduledetails` ORDER BY RAND() LIMIT 1;
-        
+        SELECT subscriptionid INTO random_subscriptionid FROM `PayAssistantDB`.`paya_subscriptions` ORDER BY RAND() LIMIT 1;
+        SELECT currencyid INTO random_currencyid FROM `PayAssistantDB`.`paya_currencies` ORDER BY RAND() LIMIT 1;
+        SELECT scheduledetailsid INTO random_scheduledetailsid FROM `PayAssistantDB`.`paya_scheduledetails` ORDER BY RAND() LIMIT 1;
         SET random_amount = ROUND((FLOOR(RAND() * 1000) + 10), 2); 
         SET random_current = FLOOR(RAND() * 2); 
         SET random_postdate = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY);
@@ -222,11 +208,7 @@ BEGIN
         INSERT INTO `PayAssistantDB`.`paya_planprices` 
         (`amount`, `current`, `subscriptionid`, `scheduledetailsid`, `currencyid`, `postdate`, `enddate`)
         VALUES
-        (random_amount, random_current,
-            random_subscriptionid,
-            random_scheduledetailsid,
-            random_currencyid
-            , random_postdate, random_enddate);
+        (random_amount, random_current, random_subscriptionid, random_scheduledetailsid, random_currencyid, random_postdate, random_enddate);
         SET i = i + 1;
     END WHILE;
 END //
@@ -244,14 +226,12 @@ BEGIN
     DECLARE plan_price_id INT;
     DECLARE random_date DATETIME;
 	DECLARE enablebit BIT;
-    
     WHILE i < plansselled DO
         SELECT `userid`, `creationdate` INTO user_id, creation_date
         FROM `PayAssistantDB`.`paya_users` ORDER BY RAND() LIMIT 1;
         SET random_date = DATE_ADD(creation_date, INTERVAL FLOOR(RAND() * (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(creation_date))) SECOND);
         SET enablebit = IF(RAND() < 0.3, 0, 1); 
-        SELECT `planpriceid` INTO plan_price_id
-        FROM `PayAssistantDB`.`paya_planprices` ORDER BY RAND() LIMIT 1;
+        SELECT `planpriceid` INTO plan_price_id FROM `PayAssistantDB`.`paya_planprices` ORDER BY RAND() LIMIT 1;
         INSERT INTO `PayAssistantDB`.`paya_plans` 
         (`adquisition`, `enabled`, `userid`, `planpriceid`)
         VALUES 
@@ -345,8 +325,6 @@ BEGIN
         (`name`, `apiurl`, `token`, `expTokenDate`, `enable`, `userid`, `paymentmethodsid`)
         VALUES 
         (random_name, 'https://api.com/exampleapiforeveryone', random_token, exp_token_date, random_enable, random_userid, random_paymentmethodsid);
-        
-        -- Incrementar el contador
         SET i = i + 1;
     END WHILE;
 END //
@@ -358,8 +336,8 @@ DELIMITER //
 CREATE PROCEDURE insertpayments()
 BEGIN
     DECLARE i INT DEFAULT 0;
-    DECLARE random_amount VARCHAR(120);
-    DECLARE random_realamount VARCHAR(120);
+    DECLARE random_amount DECIMAL(10, 6);
+    DECLARE random_realamount DECIMAL(10, 6);
     DECLARE random_discountporcent INT;
     DECLARE random_currency VARCHAR(20);
     DECLARE random_result VARCHAR(10);
@@ -374,8 +352,8 @@ BEGIN
     DECLARE random_availablemethodsid INT;
 
     WHILE i < 1000 DO
-        SET random_amount = CAST(FLOOR(RAND() * 1000) + 1 AS CHAR);
-        SET random_realamount = CAST(ROUND(random_amount * (1 - (RAND() * 0.2)) ,2) AS CHAR);
+        SET random_amount = ROUND(RAND() * 1000, 6);
+        SET random_realamount = ROUND(RAND() * 1000, 6);
         SET random_discountporcent = FLOOR(RAND() * 22);
         SET random_currency = 'USD'; 
         SET random_auth = sha2(CONCAT('auth_code_', FLOOR(RAND() * 1000000)), 256);
@@ -426,8 +404,59 @@ DELIMITER ;
 CALL inserttransactionsubtypes();
 SELECT * FROM paya_transactionsubtypes;
 -- INSERT TRANSACTIONS  ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE inserttransactions()
+Begin
+	DECLARE i INT DEFAULT 1;
+	DECLARE cantidaddepayments INT;
+    DECLARE availablemethodsid1 INT;
+	DECLARE user1id INT;
+    DECLARE amount1 DECIMAL(10,6);
+    DECLARE description1 VARCHAR(100);
+    DECLARE reference1 VARCHAR(100);
+    DECLARE datetime1 DATETIME;
+    DECLARE checksum1 VARBINARY(250);
+	DECLARE transactionsubtypeid1 INT;
+    DECLARE transactiontypeid1 INT;
+	DECLARE exchangerateid1 INT;
+    DECLARE currencyid1 INT;
+    DECLARE paymentsid1 INT;
+    SELECT COUNT(*) INTO cantidaddepayments FROM paya_payments;
+	WHILE i <= cantidaddepayments DO
+        SELECT  `paymentsid`,`description`, `reference`, `date`, `checksum`, `availablemethodsid`, `amount` INTO paymentsid1, description1, reference1, datetime1, checksum1, availablemethodsid1 ,amount1 FROM `PayAssistantDB`.`paya_payments` WHERE `paymentsid` = i;
+        SELECT `userid` INTO user1id FROM `PayAssistantDB`.`paya_availablemethods` WHERE `availablemethodsid` = availablemethodsid1;
+        SELECT `transactionsubtypeid` INTO transactionsubtypeid1 FROM `PayAssistantDB`.`paya_transactionsubtypes` ORDER BY RAND() LIMIT 1;
+        SELECT `transactiontypeid` INTO transactiontypeid1 FROM `PayAssistantDB`.`paya_transactiontypes` ORDER BY RAND() LIMIT 1;
+        SELECT `currencyid` INTO currencyid1 FROM `PayAssistantDB`.`paya_currencies` ORDER BY RAND() LIMIT 1;
+        SELECT `exchangerateid` INTO exchangerateid1 FROM `PayAssistantDB`.`paya_exchangerates` WHERE `currencyidsource` = currencyid1 ORDER BY RAND() LIMIT 1;
+		INSERT INTO `PayAssistantDB`.`paya_transactions`
+		(`name`, `amount`, `description`, `reference`, `datetime`, `officetime`, `checksum`, `transactionsubtypeid`, `transactiontypeid`, `exchangerateid`, `currencyid`, `paymentsid`, `userid`)
+		VALUES
+		(CONCAT('transaction_', i), amount1, description1, reference1, datetime1, datetime1, checksum1, transactionsubtypeid1, transactiontypeid1, exchangerateid1, currencyid1, paymentsid1, user1id);
+		SET i = i + 1;
+    END WHILE;
+END// 
+DELIMITER ;
+CALL inserttransactions();
+SELECT * FROM paya_transactions;
 
-
+-- SET FOREIGN_KEY_CHECKS = 0;
+-- TRUNCATE TABLE paya_users;
+-- TRUNCATE TABLE paya_modules;
+-- TRUNCATE TABLE paya_plans;
+-- TRUNCATE TABLE paya_planprices;
+-- TRUNCATE TABLE paya_subscriptions;
+-- TRUNCATE TABLE paya_schedules;
+-- TRUNCATE TABLE paya_scheduledetails;
+-- TRUNCATE TABLE paya_currencies;
+-- TRUNCATE TABLE paya_exchangerates;
+-- TRUNCATE TABLE paya_paymentmethods;
+-- TRUNCATE TABLE paya_availablemethods;
+-- TRUNCATE TABLE paya_payments;
+-- TRUNCATE TABLE paya_transactiontypes;
+-- TRUNCATE TABLE paya_transactionsubtypes;
+-- TRUNCATE TABLE paya_transactions;
+-- SET FOREIGN_KEY_CHECKS = 1;
 
 -- SELECT * from paya_users;
 -- SELECT COUNT(*) AS enables_en_1 FROM paya_users WHERE enable = 1;
