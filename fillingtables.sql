@@ -152,7 +152,45 @@ DELIMITER ;
 CALL insertschedulesdetails();
 SELECT * FROM paya_scheduledetails;
 -- INSERT PLAN PRICES ------------------------------------------------------------------------------------------------------------------------
-
+DELIMITER //
+CREATE PROCEDURE insertsplanprices()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE random_subscriptionid INT;
+    DECLARE random_currencyid INT;
+    DECLARE random_scheduledetailsid INT;
+    DECLARE random_amount DECIMAL(10,2);
+    DECLARE random_current BIT(1);
+    DECLARE random_postdate DATETIME;
+    DECLARE random_enddate DATETIME;
+    WHILE i < 20 DO
+        SELECT subscriptionid INTO random_subscriptionid 
+        FROM `PayAssistantDB`.`paya_subscriptions` ORDER BY RAND() LIMIT 1;
+        
+        SELECT currencyid INTO random_currencyid 
+        FROM `PayAssistantDB`.`paya_currencies` ORDER BY RAND() LIMIT 1;
+        
+        SELECT scheduledetailsid INTO random_scheduledetailsid 
+        FROM `PayAssistantDB`.`paya_scheduledetails` ORDER BY RAND() LIMIT 1;
+        
+        SET random_amount = ROUND((FLOOR(RAND() * 1000) + 10), 2); 
+        SET random_current = FLOOR(RAND() * 2); 
+        SET random_postdate = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY);
+        SET random_enddate = DATE_ADD(random_postdate, INTERVAL FLOOR(RAND() * 30) + 1 DAY);
+        INSERT INTO `PayAssistantDB`.`paya_planprices` 
+        (`amount`, `current`, `subscriptionid`, `scheduledetailsid`, `currencyid`, `postdate`, `enddate`)
+        VALUES
+        (random_amount, random_current,
+            random_subscriptionid,
+            random_scheduledetailsid,
+            random_currencyid
+            , random_postdate, random_enddate);
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+CALL insertsplanprices();
+SELECT * FROM paya_planprices;
 -- INSERT PLANS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertplan()
@@ -161,7 +199,7 @@ BEGIN
     DECLARE plansselled INT DEFAULT 100;
     DECLARE user_id INT;
     DECLARE creation_date DATETIME;
-    DECLARE plan_price_id INT DEFAULT 1; -- CAMBIARLOOOOOOOOOOOOOO
+    DECLARE plan_price_id INT; -- CAMBIARLOOOOOOOOOOOOOO
     DECLARE random_date DATETIME;
 	DECLARE enablebit BIT;
     
@@ -170,6 +208,8 @@ BEGIN
         FROM `PayAssistantDB`.`paya_users` ORDER BY RAND() LIMIT 1;
         SET random_date = DATE_ADD(creation_date, INTERVAL FLOOR(RAND() * (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(creation_date))) SECOND);
         SET enablebit = IF(RAND() < 0.3, 0, 1); 
+        SELECT `planpriceid` INTO plan_price_id
+        FROM `PayAssistantDB`.`paya_planprices` ORDER BY RAND() LIMIT 1;
         INSERT INTO `PayAssistantDB`.`paya_plans` 
         (`adquisition`, `enabled`, `userid`, `planpriceid`)
         VALUES 
