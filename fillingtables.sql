@@ -222,7 +222,7 @@ BEGIN
     DECLARE random_current BIT(1);
     DECLARE random_postdate DATETIME;
     DECLARE random_enddate DATETIME;
-    WHILE i < 70 DO
+    WHILE i < 200 DO
         SELECT subscriptionid INTO random_subscriptionid FROM `PayAssistantDB`.`paya_subscriptions` ORDER BY RAND() LIMIT 1;
         SELECT currencyid INTO random_currencyid FROM `PayAssistantDB`.`paya_currencies` ORDER BY RAND() LIMIT 1;
         SELECT scheduledetailsid INTO random_scheduledetailsid FROM `PayAssistantDB`.`paya_scheduledetails` ORDER BY RAND() LIMIT 1;
@@ -583,31 +583,20 @@ DELIMITER //
 CREATE PROCEDURE insertaddresses()
 BEGIN
     DECLARE i INT DEFAULT 0;
-    DECLARE num_addresses INT DEFAULT 100; -- Número de direcciones a insertar
+    DECLARE num_addresses INT DEFAULT 100;
     DECLARE line1 VARCHAR(200);
     DECLARE line2 VARCHAR(200);
     DECLARE zipcode VARCHAR(9);
     DECLARE cityid INT;
     DECLARE total_cities INT;
-
-    -- Obtener el número total de ciudades
     SET total_cities = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_cities`);
 
-    -- Verificar que la tabla paya_cities tenga registros
-    IF total_cities = 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La tabla paya_cities está vacía. Ejecuta insertcities primero.';
-    END IF;
-
     WHILE i < num_addresses DO
-        -- Generar datos aleatorios para la dirección
         SET line1 = CONCAT(FLOOR(RAND() * 1000), ' Main St');
         SET line2 = CONCAT('Apt ', FLOOR(RAND() * 100));
         SET zipcode = CONCAT(FLOOR(RAND() * 100000), '');
-
-        -- Seleccionar un cityid aleatorio de manera eficiente
         SET cityid = FLOOR(1 + RAND() * total_cities);
 
-        -- Insertar la dirección
         INSERT INTO `PayAssistantDB`.`paya_addresses` 
         (`line1`, `line2`, `zipcode`, `location`, `addresstype`, `cityid`)
         VALUES 
@@ -624,9 +613,6 @@ DELIMITER ;
 
 CALL insertaddresses();
 SELECT * FROM paya_addresses;
-
-
-
 -- INSERT ADDRESSES ASIGNATIONS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 
@@ -657,10 +643,6 @@ END //
 DELIMITER ;
 CALL insertaddressasignations();
 SELECT * FROM paya_addressasignations;
-
-
-
-
 
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
