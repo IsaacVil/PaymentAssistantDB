@@ -13,6 +13,8 @@ DROP PROCEDURE IF EXISTS insertpayments;
 DROP PROCEDURE IF EXISTS inserttransactiontypes;
 DROP PROCEDURE IF EXISTS inserttransactionsubtypes;
 DROP PROCEDURE IF EXISTS inserttransactions;
+DROP PROCEDURE IF EXISTS insertlanguages;
+DROP PROCEDURE IF EXISTS insertcountries;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -86,7 +88,8 @@ BEGIN
 		('Indian Rupee', 'INR', 'India', '₹'),
 		('Chinese Yuan', 'CNY', 'China', '¥'),
 		('Brazilian Real', 'BRL', 'Brazil', 'R$'),
-        ('Costa Rican Colon', 'CRC', 'Costa Rica', '₡');
+        ('Costa Rican Colon', 'CRC', 'Costa Rica', '₡'),
+		('Russian Ruble', 'RUB', 'Russia', '₽');
 END //
 DELIMITER ;
 CALL insertcurrencies();
@@ -463,6 +466,31 @@ END //
 DELIMITER ;
 CALL insertlanguages();
 SELECT * FROM paya_languages;
+-- INSERT COUNTRIES  ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertcountries()
+BEGIN
+    -- Insertar países con sus currencyid y languageid correspondientes
+    INSERT INTO `PayAssistantDB`.`paya_countries` 
+    (`countryname`, `currencyid`, `languageid`)
+    VALUES 
+    ('United States', 1, 1),   
+    ('Spain', 2, 2),          
+    ('France', 2, 3),          
+    ('Germany', 2, 4),         
+    ('China', 9, 5),           
+    ('Japan', 4, 6),          
+    ('Brazil', 10, 7),       
+    ('Italy', 2, 8),           
+    ('Russia', 12, 9),       
+    ('Costa Rica', 11, 2);     
+END //
+
+DELIMITER ;
+CALL insertcountries();
+SELECT * FROM paya_countries;
+
+
 
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
