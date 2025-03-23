@@ -34,11 +34,11 @@ BEGIN
     
     INSERT INTO nombres (nombre)
     VALUES
-        ('Isaac'),('Carlos'),('David'),('Pedro'),('Juan'),('María'),('Ana'),('José'),('Roberto'),('Miguel'),('Arturo'),('Rodrigo'),('Kevin'),('José'),('Samuel'),('Viviana'),('Sofia'),('Lucia'),('Martina'),('Pabla'),('Christopher'),('Adriana'),('Anthony'),('Walter'),('Bruce'),('Carmela');
+        ('Isaac'),('Carlos'),('David'),('Pedro'),('Juan'),('María'),('Ana'),('José'),('Roberto'),('Miguel'),('Arturo'),('Rodrigo'),('Kevin'),('José'),('Samuel'),('Viviana'),('Sofia'),('Lucia'),('Martina'),('Pabla'),('Christopher'),('Adriana'),('Anthony'),('Walter'),('Bruce'),('Carmela'),('Jessie'),('Matt'),('Roberto'),('Jane'),('Gregory'),('Eric'),('Chase'),('Cameron');
         
     INSERT INTO apellidos (apellido)
     VALUES
-        ('Villalobos'),('López'),('González'),('Pérez'),('Rodríguez'),('Hernández'),('Martínez'),('Sánchez'),('Ramírez'),('Fernández'),('Cheng'),('Johnson'),('Bonilla'),('Castillo'),('Moltisanti'),('La_Cerva'),('Soprano'),('White'),('Wayne'),('Gualtieri');
+        ('Villalobos'),('López'),('González'),('Pérez'),('Rodríguez'),('Hernández'),('Martínez'),('Sánchez'),('Ramírez'),('Fernández'),('Cheng'),('Johnson'),('Bonilla'),('Castillo'),('Moltisanti'),('La_Cerva'),('Soprano'),('White'),('Wayne'),('Gualtieri'),('Pinkman'),('Murdock'),('House'),('Foreman');
         
     WHILE i < num_users DO
         SELECT nombre INTO nombreusado FROM nombres ORDER BY RAND() LIMIT 1;
@@ -75,7 +75,6 @@ DELIMITER ;
 CALL insertmodules();
 SELECT * FROM paya_modules;
 -- INSERT CURRENCIES --------------------------------------------------------------------------------------------------------------------------
-select * from paya_currencies;
 DELIMITER //
 CREATE PROCEDURE insertcurrencies()
 BEGIN
@@ -146,7 +145,7 @@ END //
 
 DELIMITER ;
 CALL insert_exchangerates();
-SELECT * FROM paya_exchangerates where currencyiddestiny = 1;
+SELECT * FROM paya_exchangerates;
 -- INSERT SUBSCRIPTIONS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertsubscriptions()
@@ -194,17 +193,17 @@ BEGIN
     DECLARE i INT DEFAULT 0;
     DECLARE random_scheduleid INT;
     DECLARE deletedbit BIT;
-    WHILE i < 20 DO
+    WHILE i < 200 DO
         SELECT scheduleid INTO random_scheduleid 
         FROM `PayAssistantDB`.`paya_schedules` 
         ORDER BY RAND() 
         LIMIT 1;
-        SET deletedbit = IF(RAND() < 0.3, 0, 1); 
+        SET deletedbit = IF(RAND() < 0.6, 0, 1); 
         INSERT INTO `PayAssistantDB`.`paya_scheduledetails` 
         (`deleted`, `basedate`, `datepart`, `lastexecution`, `nextexecution`, `scheduleid`)
         VALUES
         (deletedbit, DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY), IF(FLOOR(RAND() * 2) = 0, 'MM', 'YY'), DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY),
-        DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), random_scheduleid);
+        DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 45) DAY), random_scheduleid);
         SET i = i + 1;
     END WHILE;
 END //
@@ -223,12 +222,12 @@ BEGIN
     DECLARE random_current BIT(1);
     DECLARE random_postdate DATETIME;
     DECLARE random_enddate DATETIME;
-    WHILE i < 20 DO
+    WHILE i < 70 DO
         SELECT subscriptionid INTO random_subscriptionid FROM `PayAssistantDB`.`paya_subscriptions` ORDER BY RAND() LIMIT 1;
         SELECT currencyid INTO random_currencyid FROM `PayAssistantDB`.`paya_currencies` ORDER BY RAND() LIMIT 1;
         SELECT scheduledetailsid INTO random_scheduledetailsid FROM `PayAssistantDB`.`paya_scheduledetails` ORDER BY RAND() LIMIT 1;
         SET random_amount = ROUND((FLOOR(RAND() * 1000) + 10), 2); 
-        SET random_current = FLOOR(RAND() * 2); 
+        SET random_current =  IF(RAND() < 0.4, 0, 1); 
         SET random_postdate = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY);
         SET random_enddate = DATE_ADD(random_postdate, INTERVAL FLOOR(RAND() * 30) + 1 DAY);
         INSERT INTO `PayAssistantDB`.`paya_planprices` 
@@ -246,7 +245,7 @@ DELIMITER //
 CREATE PROCEDURE insertplan()
 BEGIN
     DECLARE i INT DEFAULT 0;
-    DECLARE plansselled INT DEFAULT 100;
+    DECLARE plansselled INT DEFAULT 150;
     DECLARE user_id INT;
     DECLARE creation_date DATETIME;
     DECLARE plan_price_id INT;
@@ -256,7 +255,7 @@ BEGIN
         SELECT `userid`, `creationdate` INTO user_id, creation_date
         FROM `PayAssistantDB`.`paya_users` ORDER BY RAND() LIMIT 1;
         SET random_date = DATE_ADD(creation_date, INTERVAL FLOOR(RAND() * (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(creation_date))) SECOND);
-        SET enablebit = IF(RAND() < 0.3, 0, 1); 
+        SET enablebit = IF(RAND() < 0.4, 0, 1); 
         SELECT `planpriceid` INTO plan_price_id FROM `PayAssistantDB`.`paya_planprices` ORDER BY RAND() LIMIT 1;
         INSERT INTO `PayAssistantDB`.`paya_plans` 
         (`adquisition`, `enabled`, `userid`, `planpriceid`)
@@ -385,7 +384,7 @@ BEGIN
         SET random_auth = sha2(CONCAT('auth_code_', FLOOR(RAND() * 1000000)), 256);
         SET random_reference = CONCAT('REF', FLOOR(RAND() * 100000));
         SET random_chargetoken = sha2(CONCAT('chargetoken_', FLOOR(RAND() * 1000000)), 256);
-        SET random_error = IF(RAND() < 0.8, '', 'Error Message'); 
+        SET random_error = IF(RAND() < 0.8, NULL, 'Error Message'); 
         SET random_date = DATE_ADD(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY);
         SET random_result = IF(random_error IS NULL, 'Success', 'Error');
 
@@ -584,20 +583,31 @@ DELIMITER //
 CREATE PROCEDURE insertaddresses()
 BEGIN
     DECLARE i INT DEFAULT 0;
-    DECLARE num_addresses INT DEFAULT 100; 
+    DECLARE num_addresses INT DEFAULT 100; -- Número de direcciones a insertar
     DECLARE line1 VARCHAR(200);
     DECLARE line2 VARCHAR(200);
     DECLARE zipcode VARCHAR(9);
     DECLARE cityid INT;
     DECLARE total_cities INT;
+
+    -- Obtener el número total de ciudades
     SET total_cities = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_cities`);
 
+    -- Verificar que la tabla paya_cities tenga registros
+    IF total_cities = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La tabla paya_cities está vacía. Ejecuta insertcities primero.';
+    END IF;
+
     WHILE i < num_addresses DO
+        -- Generar datos aleatorios para la dirección
         SET line1 = CONCAT(FLOOR(RAND() * 1000), ' Main St');
         SET line2 = CONCAT('Apt ', FLOOR(RAND() * 100));
         SET zipcode = CONCAT(FLOOR(RAND() * 100000), '');
+
+        -- Seleccionar un cityid aleatorio de manera eficiente
         SET cityid = FLOOR(1 + RAND() * total_cities);
 
+        -- Insertar la dirección
         INSERT INTO `PayAssistantDB`.`paya_addresses` 
         (`line1`, `line2`, `zipcode`, `location`, `addresstype`, `cityid`)
         VALUES 
@@ -614,6 +624,9 @@ DELIMITER ;
 
 CALL insertaddresses();
 SELECT * FROM paya_addresses;
+
+
+
 -- INSERT ADDRESSES ASIGNATIONS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 
@@ -644,6 +657,10 @@ END //
 DELIMITER ;
 CALL insertaddressasignations();
 SELECT * FROM paya_addressasignations;
+
+
+
+
 
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
