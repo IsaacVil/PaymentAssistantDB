@@ -3,6 +3,8 @@ DROP PROCEDURE IF EXISTS insertmodules;
 DROP PROCEDURE IF EXISTS insertplan;
 DROP PROCEDURE IF EXISTS insertcurrencies;
 DROP PROCEDURE IF EXISTS insertsubscriptions;
+DROP PROCEDURE IF EXISTS insertschedules;
+DROP PROCEDURE IF EXISTS insertschedulesdetails;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -102,6 +104,54 @@ END //
 DELIMITER ;
 CALL insertsubscriptions();
 SELECT * FROM paya_subscriptions;
+-- INSERT SCHEDULES ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertschedules()
+BEGIN
+        INSERT INTO `PayAssistantDB`.`paya_schedules` 
+        (`name`, `recurrencytype`, `repeat`, `endtype`, `repetitions`, `enddate`)
+        VALUES 
+		('Schedule 1', 'DAILY', 1, 'DATE', 45, '2025-03-10 14:32:53'),
+		('Schedule 2', 'WEEKLY', 0, 'REPETITIONS', 10, '2025-06-15 18:47:21'),
+		('Schedule 4', 'YEARLY', 1, 'DATE', 20, '2025-04-07 11:45:30'),
+		('Schedule 5', 'CUSTOM', 0, 'REPETITIONS', 15, '2025-09-12 20:59:04');
+        INSERT INTO `PayAssistantDB`.`paya_schedules` 
+        (`name`, `recurrencytype`, `repeat`, `endtype`, `repetitions`)
+        VALUES 
+        ('Schedule 3', 'MONTHLY', 1, 'NEVER', 0);
+END //
+DELIMITER ;
+CALL insertschedules();
+SELECT * FROM paya_schedules;
+-- INSERT SCHEDULES DETAILS------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertschedulesdetails()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE random_scheduleid INT;
+    DECLARE deletedbit BIT;
+    -- Insertar 20 registros con valores aleatorios
+    WHILE i < 20 DO
+        -- Obtener un `scheduleid` aleatorio de la tabla `paya_schedules`
+        SELECT scheduleid INTO random_scheduleid 
+        FROM `PayAssistantDB`.`paya_schedules` 
+        ORDER BY RAND() 
+        LIMIT 1;
+        SET deletedbit = IF(RAND() < 0.3, 0, 1); 
+        INSERT INTO `PayAssistantDB`.`paya_scheduledetails` 
+        (`deleted`, `basedate`, `datepart`, `lastexecution`, `nextexecution`, `scheduleid`)
+        VALUES
+        (deletedbit, 
+            DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY),
+            IF(FLOOR(RAND() * 2) = 0, 'MM', 'YY'),
+            DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY),DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY),random_scheduleid);
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+CALL insertschedulesdetails();
+SELECT * FROM paya_scheduledetails;
+-- INSERT PLAN PRICES ------------------------------------------------------------------------------------------------------------------------
 
 -- INSERT PLANS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
@@ -137,3 +187,4 @@ SELECT * FROM paya_plans;
 -- SELECT COUNT(*) AS enables_en_1 FROM paya_users WHERE enable = 1;
 -- TRUNCATE TABLE paya_users;
 -- TRUNCATE TABLE paya_modules;
+-- TRUNCATE TABLE paya_scheduledetails;
