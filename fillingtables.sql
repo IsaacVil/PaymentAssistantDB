@@ -5,6 +5,12 @@ DROP PROCEDURE IF EXISTS insertcurrencies;
 DROP PROCEDURE IF EXISTS insertsubscriptions;
 DROP PROCEDURE IF EXISTS insertschedules;
 DROP PROCEDURE IF EXISTS insertschedulesdetails;
+DROP PROCEDURE IF EXISTS insert_exchangerates;
+DROP PROCEDURE IF EXISTS insertpaymentmethods;
+DROP PROCEDURE IF EXISTS insertavailablemethods;
+DROP PROCEDURE IF EXISTS insertpayments;
+DROP PROCEDURE IF EXISTS inserttransactiontypes;
+DROP PROCEDURE IF EXISTS inserttransactionsubtypes;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -49,7 +55,6 @@ DELIMITER ;
 CALL insertusers();
 SELECT * FROM paya_users;
 -- INSERT MODULES ------------------------------------------------------------------------------------------------------------------------
-
 DELIMITER //
 CREATE PROCEDURE insertmodules()
 BEGIN
@@ -59,7 +64,6 @@ BEGIN
     ('Permission Settings'), ('Payment Method Settings'), ('Billing Management'), ('Activity Logs'), ('User Management'), ('AI Chat Assistant');
 END //
 DELIMITER ;
-
 CALL insertmodules();
 SELECT * FROM paya_modules;
 -- INSERT CURRENCIES --------------------------------------------------------------------------------------------------------------------------
@@ -83,6 +87,44 @@ END //
 DELIMITER ;
 CALL insertcurrencies();
 SELECT * FROM paya_currencies;
+-- INSERT EXCHANGERATE --------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insert_exchangerates()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE numcurrencies INT;
+    DECLARE currency_source_id INT;
+    DECLARE currency_destiny_id INT;
+    DECLARE start_date DATETIME;
+    DECLARE end_date DATETIME;
+    DECLARE current_rate BIT;
+    SELECT COUNT(*) INTO numcurrencies FROM `PayAssistantDB`.`paya_currencies`;
+
+    WHILE i < (numcurrencies * (numcurrencies - 1)) DO
+        -- Seleccionar la moneda fuente (source) de la tabla de monedas
+        SELECT `currencyid` INTO currency_source_id
+        FROM `PayAssistantDB`.`paya_currencies`
+        ORDER BY RAND() LIMIT 1;
+
+        -- Seleccionar la moneda destino (destiny) de la tabla de monedas (debe ser distinta de la fuente)
+        SELECT `currencyid` INTO currency_destiny_id
+        FROM `PayAssistantDB`.`paya_currencies`
+        WHERE `currencyid` != currency_source_id
+        ORDER BY RAND() LIMIT 1;
+        SET start_date = DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY);
+        SET end_date = DATE_ADD(start_date, INTERVAL FLOOR(RAND() * 30) DAY);
+        SET current_rate = IF(RAND() < 0.5, 1, 0);  
+        INSERT INTO `PayAssistantDB`.`paya_exchangerates` 
+        (`startdate`, `enddate`, `exchangerate`, `currentexchangerate`, `currencyidsource`, `currencyiddestiny`)
+        VALUES
+        (start_date, end_date, ROUND((RAND() * 4.9) + 0.7, 4), current_rate, currency_source_id, currency_destiny_id);
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+
+CALL insert_exchangerates();
+SELECT * FROM paya_exchangerates;
 -- INSERT SUBSCRIPTIONS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertsubscriptions()
@@ -220,6 +262,170 @@ END //
 DELIMITER ;
 CALL insertplan();
 SELECT * FROM paya_plans;
+-- INSERT PAYMENT METHODS ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertpaymentmethods()
+BEGIN
+        INSERT INTO `PayAssistantDB`.`paya_paymentmethods` 
+        (`name`, `apiurl`, `secretkey`, `key`, `logoiconurl`, `enable`)
+        VALUES 
+        ('PayPal', 'https://api.paypal.com/v1/payments/payment', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg', 1),
+         
+        ('Stripe', 'https://api.stripe.com/v1/charges', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://stripe.com/img/v3/home/twitter.png', 1),
+         
+        ('Banco Nacional de Costa Rica', 'https://api.bncr.fi.cr/v1/transactions', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://www.bncr.fi.cr/images/bncr-logo.svg', 0),
+         
+        ('Banco de Costa Rica', 'https://api.bancobcr.com/v1/transactions', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://www.bancobcr.com/images/logo-bcr.svg', 1),
+         
+        ('Scotiabank Costa Rica', 'https://api.scotiabank.cr/v1/transactions', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://www.scotiabank.com.cr/content/dam/scotiabank/cr/images/logo.svg', 1),
+         
+        ('BAC Credomatic', 'https://api.baccredomatic.com/v1/transactions', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://www.baccredomatic.com/wcm/connect/bac/web/cr/brand/logo/bac_credomatic.png', 1),
+         
+        ('Promerica', 'https://api.promerica.cr/v1/transactions', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://www.bancopromerica.com/images/logo_promerica.svg', 1),
+         
+        ('Venmo', 'https://api.venmo.com/v1/payments', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://upload.wikimedia.org/wikipedia/commons/a/a7/Venmo_logo_2018.svg', 0),
+         
+        ('Apple Pay', 'https://api.applepay.com/v1/payments', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://upload.wikimedia.org/wikipedia/commons/a/a6/Apple_Pay_logo.svg', 1),
+         
+        ('Google Pay', 'https://api.google.com/pay/v1/transactions', 
+         SHA2('Llavesecretisima', 256), 
+         SHA2('llavenotansecretisima', 256), 
+         'https://upload.wikimedia.org/wikipedia/commons/1/19/Google_Pay_logo.png', 1);
+END //
+DELIMITER ;
+CALL insertpaymentmethods();
+SELECT * FROM paya_paymentmethods;
+-- INSERT AVAILABLE METHODS (metodos que tiene el usuario, cuentas en los bancos del payment methods)------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertavailablemethods()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_elements INT DEFAULT 100;
+    DECLARE random_userid INT;
+    DECLARE random_paymentmethodsid INT;
+    DECLARE random_token VARBINARY(250);
+    DECLARE exp_token_date DATETIME;
+    DECLARE random_enable BIT;
+    DECLARE random_name VARCHAR(45);
+    WHILE i < num_elements DO
+        SELECT `userid` INTO random_userid FROM `PayAssistantDB`.`paya_users` ORDER BY RAND() LIMIT 1;
+        SELECT `paymentmethodsid` INTO random_paymentmethodsid FROM `PayAssistantDB`.`paya_paymentmethods` ORDER BY RAND() LIMIT 1;
+        SET random_token = sha2(CONCAT('token_api_supersecret_num_', FLOOR(RAND() * 100000000)), 256);  -- SHA256
+        SET exp_token_date = DATE_ADD(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY);
+        SET random_enable = IF(RAND() < 0.6, 1, 0);
+        SET random_name = CONCAT('PaymentMethod_', FLOOR(RAND() * 100));
+        INSERT INTO `PayAssistantDB`.`paya_availablemethods`
+        (`name`, `apiurl`, `token`, `expTokenDate`, `enable`, `userid`, `paymentmethodsid`)
+        VALUES 
+        (random_name, 'https://api.com/exampleapiforeveryone', random_token, exp_token_date, random_enable, random_userid, random_paymentmethodsid);
+        
+        -- Incrementar el contador
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+CALL insertavailablemethods();
+SELECT * FROM paya_availablemethods;
+-- INSERT PAYMENTS ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE insertpayments()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE random_amount VARCHAR(120);
+    DECLARE random_realamount VARCHAR(120);
+    DECLARE random_discountporcent INT;
+    DECLARE random_currency VARCHAR(20);
+    DECLARE random_result VARCHAR(10);
+    DECLARE random_auth VARCHAR(100);
+    DECLARE random_reference VARCHAR(100);
+    DECLARE random_chargetoken VARCHAR(100);
+    DECLARE random_description VARCHAR(100) DEFAULT 'this is a test of filling tables';
+    DECLARE random_error VARCHAR(100);
+    DECLARE random_date DATETIME;
+    DECLARE checksums VARBINARY(250);
+    DECLARE random_paymentmethodsid INT;
+    DECLARE random_availablemethodsid INT;
+
+    WHILE i < 1000 DO
+        SET random_amount = CAST(FLOOR(RAND() * 1000) + 1 AS CHAR);
+        SET random_realamount = CAST(ROUND(random_amount * (1 - (RAND() * 0.2)) ,2) AS CHAR);
+        SET random_discountporcent = FLOOR(RAND() * 22);
+        SET random_currency = 'USD'; 
+        SET random_auth = sha2(CONCAT('auth_code_', FLOOR(RAND() * 1000000)), 256);
+        SET random_reference = CONCAT('REF', FLOOR(RAND() * 100000));
+        SET random_chargetoken = sha2(CONCAT('chargetoken_', FLOOR(RAND() * 1000000)), 256);
+        SET random_error = IF(RAND() < 0.8, NULL, 'Error Message'); 
+        SET random_date = DATE_ADD(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY);
+        SET random_result = IF(random_error IS NULL, 'Success', 'Error');
+
+        SELECT `paymentmethodsid` INTO random_paymentmethodsid FROM `PayAssistantDB`.`paya_paymentmethods` ORDER BY RAND() LIMIT 1;
+        SELECT `availablemethodsid` INTO random_availablemethodsid FROM `PayAssistantDB`.`paya_availablemethods` ORDER BY RAND() LIMIT 1;
+
+        SET checksums = sha2(CONCAT(random_amount, random_realamount, random_discountporcent, random_currency, random_result, random_auth, random_reference, random_chargetoken, random_description, 
+            IFNULL(random_error, ''), 'Esto es para que no sepan como fue encriptado',random_date, random_paymentmethodsid, random_availablemethodsid), 256);
+
+        INSERT INTO `PayAssistantDB`.`paya_payments`
+        (`amount`, `realamount`, `discountporcent`, `currency`, `result`, `auth`, `reference`, `chargetoken`, `description`, `error`, `date`, `checksum`, `paymentmethodsid`, `availablemethodsid`)
+        VALUES 
+        (random_amount, random_realamount, random_discountporcent, random_currency, random_result, random_auth, random_reference, random_chargetoken, random_description, random_error, random_date, checksums, random_paymentmethodsid, random_availablemethodsid);
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+CALL insertpayments();
+SELECT * FROM paya_payments;
+-- INSERT TRANSACTIONS TYPES ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE inserttransactiontypes()
+BEGIN
+        INSERT INTO `PayAssistantDB`.`paya_transactiontypes` 
+        (`name`)
+        VALUES 
+        ('Debit'), ('Credit'),('Refund');
+END //
+DELIMITER ;
+CALL inserttransactiontypes();
+SELECT * FROM paya_transactiontypes;
+-- INSERT TRANSACTIONS SUBTYPES ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE inserttransactionsubtypes()
+BEGIN
+        INSERT INTO `PayAssistantDB`.`paya_transactionsubtypes` 
+        (`name`)
+        VALUES 
+        ('Subscription Cancelation'),('Subscription Payment'),('Gift'),('Mortgage Payment');
+END //
+DELIMITER ;
+CALL inserttransactionsubtypes();
+SELECT * FROM paya_transactionsubtypes;
+-- INSERT TRANSACTIONS  ------------------------------------------------------------------------------------------------------------------------
 
 
 
