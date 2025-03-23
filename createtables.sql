@@ -201,7 +201,6 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_currencies` (
   PRIMARY KEY (`currencyid`))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `PayAssistantDB`.`paya_countries`
 -- -----------------------------------------------------
@@ -413,8 +412,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_payments` (
   `paymentsid` BIGINT NOT NULL AUTO_INCREMENT,
-  `amount` VARCHAR(120) NOT NULL,
-  `realamount` VARCHAR(120) NOT NULL,
+  `amount` DECIMAL(10,6) NOT NULL,
+  `realamount` DECIMAL(10,6) NOT NULL,
   `discountporcent` INT NOT NULL,
   `currency` VARCHAR(20) NOT NULL,
   `result` VARCHAR(10) NOT NULL,
@@ -422,7 +421,7 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_payments` (
   `reference` VARCHAR(100) NOT NULL,
   `chargetoken` VARCHAR(100) NOT NULL,
   `description` VARCHAR(100) NOT NULL,
-  `error` VARCHAR(100) NOT NULL,
+  `error` VARCHAR(100) NULL,
   `date` DATETIME NOT NULL,
   `checksum` VARBINARY(250) NOT NULL,
   `paymentmethodsid` INT NOT NULL,
@@ -441,8 +440,6 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_payments` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `PayAssistantDB`.`paya_conctactinfotypes`
 -- -----------------------------------------------------
@@ -587,7 +584,7 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_exchangerates` (
   `exchangerateid` INT NOT NULL AUTO_INCREMENT,
   `startdate` DATETIME NOT NULL,
   `enddate` DATETIME NOT NULL,
-  `exchangerate` DECIMAL NOT NULL,
+  `exchangerate` DECIMAL(10, 4) NOT NULL,
   `currentexchangerate` BIT(1) NOT NULL,
   `currencyidsource` INT NOT NULL,
   `currencyiddestiny` INT NOT NULL,
@@ -613,7 +610,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transactions` (
   `transactionid` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(40) NOT NULL,
-  `amount` DECIMAL NOT NULL,
+  `amount` DECIMAL(10,6) NOT NULL,
   `description` VARCHAR(100) NOT NULL,
   `reference` VARCHAR(100) NOT NULL,
   `datetime` DATETIME NOT NULL,
@@ -664,8 +661,6 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transactions` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `PayAssistantDB`.`paya_subscriptions`
 -- -----------------------------------------------------
@@ -690,7 +685,7 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_schedules` (
   `repeat` BIT(1) NOT NULL,
   `endtype` ENUM("DATE", "REPETITIONS", "NEVER") NOT NULL,
   `repetitions` INT NOT NULL,
-  `enddate` DATETIME NULL,
+  `enddate` DATETIME,
   PRIMARY KEY (`scheduleid`))
 ENGINE = InnoDB;
 
@@ -721,7 +716,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_planprices` (
   `planpriceid` INT NOT NULL AUTO_INCREMENT,
-  `amount` DECIMAL NOT NULL,
+  `amount` DECIMAL(10,2) NOT NULL,
   `current` BIT(1) NOT NULL,
   `subscriptionid` INT NOT NULL,
   `scheduledetailsid` INT NOT NULL,
