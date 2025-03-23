@@ -6,7 +6,7 @@ The data base was a collaborative effort between **Isaac Villalobos** and **Carl
 Any questions or inquiries about the inner workings of the project can be directed to my personal email: IsaacVillalobosB@gmail.com.
 
 ## Entity List
-(Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf)
+Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf
 - Roles
   - Permissions
   - Enable
