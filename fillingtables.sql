@@ -15,6 +15,7 @@ DROP PROCEDURE IF EXISTS inserttransactionsubtypes;
 DROP PROCEDURE IF EXISTS inserttransactions;
 DROP PROCEDURE IF EXISTS insertlanguages;
 DROP PROCEDURE IF EXISTS insertcountries;
+DROP PROCEDURE IF EXISTS insertstates;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -475,22 +476,43 @@ BEGIN
     (`countryname`, `currencyid`, `languageid`)
     VALUES 
     ('United States', 1, 1),   
-    ('Spain', 2, 2),          
+    ('Spain', 2, 2),           
     ('France', 2, 3),          
     ('Germany', 2, 4),         
     ('China', 9, 5),           
-    ('Japan', 4, 6),          
+    ('Japan', 4, 6),           
     ('Brazil', 10, 7),       
     ('Italy', 2, 8),           
-    ('Russia', 12, 9),       
+    ('Russia', 12, 9),      
     ('Costa Rica', 11, 2);     
 END //
 
 DELIMITER ;
 CALL insertcountries();
 SELECT * FROM paya_countries;
+-- INSERT STATES ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
 
+CREATE PROCEDURE insertstates()
+BEGIN
+    INSERT INTO `PayAssistantDB`.`paya_states` 
+    (`statename`, `paya_countries_countryid`)
+    VALUES 
+    ('California', 1), ('Texas', 1), ('New York', 1), 
+    ('Madrid', 2), ('Barcelona', 2), ('Valencia', 2),
+    ('Île-de-France', 3), ('Provence-Alpes-Côte', 3), ('Auvergne-Rhône-Alpes', 3),  
+    ('Bavaria', 4), ('Berlin', 4), ('Hamburg', 4), 
+    ('Beijing', 5), ('Shanghai', 5), ('Guangdong', 5), 
+    ('Tokyo', 6), ('Osaka', 6), ('Hokkaido', 6), 
+    ('São Paulo', 7), ('Rio de Janeiro', 7), ('Minas Gerais', 7), 
+    ('Lombardy', 8), ('Sicily', 8), ('Veneto', 8),
+    ('Moscow', 9), ('Saint Petersburg', 9), ('Novosibirsk', 9),
+    ('San José', 10), ('Alajuela', 10), ('Cartago', 10);    
+END //
 
+DELIMITER ;
+CALL insertstates();
+SELECT * FROM paya_states;
 
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
