@@ -21,8 +21,8 @@ USE `PayAssistantDB` ;
 -- Table `PayAssistantDB`.`paya_modules`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_modules` (
-  `moduleid` TINYINT(10) NOT NULL,
-  `home` VARCHAR(45) NOT NULL,
+  `moduleid` TINYINT(10) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`moduleid`))
 ENGINE = InnoDB;
 
@@ -31,7 +31,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_languages`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_languages` (
-  `languageid` INT NOT NULL,
+  `languageid` INT NOT NULL AUTO_INCREMENT,
   `languagename` VARCHAR(30) NOT NULL,
   `enable` BIT(1) NOT NULL,
   `culture` VARCHAR(10) NOT NULL,
@@ -43,7 +43,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_translations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_translations` (
-  `translationsid` INT NOT NULL,
+  `translationsid` INT NOT NULL AUTO_INCREMENT,
   `translationkey` VARCHAR(50) NOT NULL,
   `caption` VARCHAR(300) NOT NULL,
   `enable` BIT(1) NOT NULL,
@@ -71,7 +71,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_roles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_roles` (
-  `roleid` INT NOT NULL,
+  `roleid` INT NOT NULL AUTO_INCREMENT,
   `rolename` VARCHAR(30) NOT NULL,
   `description` VARCHAR(60) NOT NULL,
   `asignationdate` DATETIME NOT NULL,
@@ -84,7 +84,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_permissions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_permissions` (
-  `permissionid` INT NOT NULL,
+  `permissionid` INT NOT NULL AUTO_INCREMENT,
   `permissioncode` VARCHAR(10) NOT NULL,
   `description` VARCHAR(45) NOT NULL,
   `htmlObjectid` VARCHAR(60) NOT NULL,
@@ -103,7 +103,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_rolespermissions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_rolespermissions` (
-  `rolepermissionsid` INT NOT NULL,
+  `rolepermissionsid` INT NOT NULL AUTO_INCREMENT,
   `asignationdate` DATETIME NOT NULL,
   `enable` BIT(1) NOT NULL,
   `deleted` BIT(1) NOT NULL,
@@ -151,7 +151,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_usersroles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_usersroles` (
-  `usersrolesid` INT NOT NULL,
+  `usersrolesid` INT NOT NULL AUTO_INCREMENT,
   `asginationdate` DATETIME NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `checksum` VARBINARY(250) NOT NULL,
@@ -179,7 +179,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_companies`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_companies` (
-  `companyid` INT NOT NULL,
+  `companyid` INT NOT NULL AUTO_INCREMENT,
   `companyname` VARCHAR(45) NOT NULL,
   `taxid` VARCHAR(10) NULL,
   `enable` BIT(1) NOT NULL,
@@ -193,7 +193,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_currencies`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_currencies` (
-  `currencyid` INT NOT NULL,
+  `currencyid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `acronym` VARCHAR(15) NOT NULL,
   `country` VARCHAR(45) NOT NULL,
@@ -230,7 +230,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_states`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_states` (
-  `stateid` INT NOT NULL,
+  `stateid` INT NOT NULL AUTO_INCREMENT,
   `statename` VARCHAR(60) NOT NULL,
   `paya_countries_countryid` INT NOT NULL,
   PRIMARY KEY (`stateid`),
@@ -264,7 +264,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_addresses`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_addresses` (
-  `addressid` INT NOT NULL,
+  `addressid` INT NOT NULL AUTO_INCREMENT,
   `line1` VARCHAR(200) NOT NULL,
   `line2` VARCHAR(200) NOT NULL,
   `zipcode` VARCHAR(9) NOT NULL,
@@ -285,7 +285,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_userspermissions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_userspermissions` (
-  `userpermissionsid` INT NOT NULL,
+  `userpermissionsid` INT NOT NULL AUTO_INCREMENT,
   `asignateddate` DATETIME NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `checksum` VARBINARY(250) NOT NULL,
@@ -313,7 +313,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_mediatypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_mediatypes` (
-  `mediatypeid` INT NOT NULL,
+  `mediatypeid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(20) NOT NULL,
   `formattype` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`mediatypeid`))
@@ -324,7 +324,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_mediafiles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_mediafiles` (
-  `mediafileid` INT NOT NULL,
+  `mediafileid` INT NOT NULL AUTO_INCREMENT,
   `userid` INT NOT NULL,
   `filename` VARCHAR(60) NOT NULL,
   `storageurl` VARCHAR(100) NOT NULL,
@@ -351,7 +351,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_mediafilestatus`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_mediafilestatus` (
-  `mediafilestatusid` INT NOT NULL,
+  `mediafilestatusid` INT NOT NULL AUTO_INCREMENT,
   `mediafileid` INT NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `statusactive` BIT(1) NOT NULL,
@@ -369,7 +369,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_paymentmethods`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_paymentmethods` (
-  `paymentmethodsid` INT NOT NULL,
+  `paymentmethodsid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `apiurl` VARCHAR(180) NOT NULL,
   `secretkey` VARBINARY(250) NOT NULL,
@@ -384,7 +384,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_availablemethods`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_availablemethods` (
-  `availablemethodsid` INT NOT NULL,
+  `availablemethodsid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `apiurl` VARCHAR(180) NOT NULL,
   `token` VARBINARY(250) NOT NULL,
@@ -412,7 +412,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_payments`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_payments` (
-  `paymentsid` BIGINT NOT NULL,
+  `paymentsid` BIGINT NOT NULL AUTO_INCREMENT,
   `amount` VARCHAR(120) NOT NULL,
   `realamount` VARCHAR(120) NOT NULL,
   `discountporcent` INT NOT NULL,
@@ -447,7 +447,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_conctactinfotypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_conctactinfotypes` (
-  `contactinfotypeid` INT NOT NULL,
+  `contactinfotypeid` INT NOT NULL AUTO_INCREMENT,
   `typename` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`contactinfotypeid`))
 ENGINE = InnoDB;
@@ -457,7 +457,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_contactinfo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_contactinfo` (
-  `contactinfoid` INT NOT NULL,
+  `contactinfoid` INT NOT NULL AUTO_INCREMENT,
   `value` VARCHAR(100) NOT NULL,
   `enable` BIT(1) NOT NULL,
   `lastupdate` DATETIME NOT NULL,
@@ -483,7 +483,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_logtypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_logtypes` (
-  `logtypeid` INT NOT NULL,
+  `logtypeid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `ref1desc` VARCHAR(100) NOT NULL,
   `ref2desc` VARCHAR(100) NOT NULL,
@@ -497,7 +497,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_logsources`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_logsources` (
-  `logsourcesid` INT NOT NULL,
+  `logsourcesid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`logsourcesid`))
 ENGINE = InnoDB;
@@ -507,7 +507,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_logseverity`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_logseverity` (
-  `logseverityid` INT NOT NULL,
+  `logseverityid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`logseverityid`))
 ENGINE = InnoDB;
@@ -564,7 +564,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_transactionsubtypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transactionsubtypes` (
-  `transactionsubtypeid` INT NOT NULL,
+  `transactionsubtypeid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(25) NOT NULL,
   PRIMARY KEY (`transactionsubtypeid`))
 ENGINE = InnoDB;
@@ -574,7 +574,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_transactiontypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transactiontypes` (
-  `transactiontypeid` INT NOT NULL,
+  `transactiontypeid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(25) NOT NULL,
   PRIMARY KEY (`transactiontypeid`))
 ENGINE = InnoDB;
@@ -584,7 +584,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_exchangerates`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_exchangerates` (
-  `exchangerateid` INT NOT NULL,
+  `exchangerateid` INT NOT NULL AUTO_INCREMENT,
   `startdate` DATETIME NOT NULL,
   `enddate` DATETIME NOT NULL,
   `exchangerate` DECIMAL NOT NULL,
@@ -611,7 +611,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_transactions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transactions` (
-  `transactionid` BIGINT(10) NOT NULL,
+  `transactionid` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(40) NOT NULL,
   `amount` DECIMAL NOT NULL,
   `description` VARCHAR(100) NOT NULL,
@@ -670,7 +670,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_subscriptions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_subscriptions` (
-  `subscriptionid` INT NOT NULL,
+  `subscriptionid` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(100) NOT NULL,
   `logoURL` VARCHAR(250) NOT NULL,
   `startdate` DATETIME NOT NULL,
@@ -684,7 +684,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_schedules`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_schedules` (
-  `scheduleid` INT NOT NULL,
+  `scheduleid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `recurrencytype` ENUM("DAILY", "WEEKLY", "MONTHLY", "YEARLY", "CUSTOM") NOT NULL,
   `repeat` BIT(1) NOT NULL,
@@ -699,7 +699,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_scheduledetails`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_scheduledetails` (
-  `scheduledetailsid` INT NOT NULL,
+  `scheduledetailsid` INT NOT NULL AUTO_INCREMENT,
   `deleted` BIT(1) NOT NULL,
   `basedate` DATETIME NOT NULL,
   `datepart` VARCHAR(30) NOT NULL,
@@ -720,7 +720,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_planprices`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_planprices` (
-  `planpriceid` INT NOT NULL,
+  `planpriceid` INT NOT NULL AUTO_INCREMENT,
   `amount` DECIMAL NOT NULL,
   `current` BIT(1) NOT NULL,
   `subscriptionid` INT NOT NULL,
@@ -754,7 +754,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_plans`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_plans` (
-  `planid` INT NOT NULL,
+  `planid` INT NOT NULL AUTO_INCREMENT,
   `adquisition` DATETIME NOT NULL,
   `enabled` BIT(1) NOT NULL,
   `userid` INT NOT NULL,
@@ -786,7 +786,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_planfeatures`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_planfeatures` (
-  `planfeatureid` INT NOT NULL,
+  `planfeatureid` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(100) NOT NULL,
   `enabled` BIT(1) NOT NULL,
   `datatype` VARCHAR(10) NOT NULL,
@@ -798,13 +798,13 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_personplanlimits`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_personplanlimits` (
-  `planlimits` INT NOT NULL,
+  `planlimitsid` INT NOT NULL AUTO_INCREMENT,
   `limit` VARCHAR(10) NOT NULL,
   `enabled` BIT(1) NOT NULL,
   `datatype` VARCHAR(10) NOT NULL,
   `planid` INT NOT NULL,
   `planfeatureid` INT NOT NULL,
-  PRIMARY KEY (`planlimits`),
+  PRIMARY KEY (`planlimitsid`),
   INDEX `fk_paya_personplanlimits_paya_plans1_idx` (`planid` ASC) VISIBLE,
   INDEX `fk_paya_personplanlimits_paya_planfeatures1_idx` (`planfeatureid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_personplanlimits_paya_plans1`
@@ -824,7 +824,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_featuresperplan`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_featuresperplan` (
-  `featuresperplanid` INT NOT NULL,
+  `featuresperplanid` INT NOT NULL AUTO_INCREMENT,
   `value` VARCHAR(100) NOT NULL,
   `enabled` BIT(1) NOT NULL,
   `planfeatureid` INT NOT NULL,
@@ -849,7 +849,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_audio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_audio` (
-  `usersaudioid` INT NOT NULL,
+  `usersaudioid` INT NOT NULL AUTO_INCREMENT,
   `transcriptionid` INT NOT NULL,
   PRIMARY KEY (`usersaudioid`),
   INDEX `paya_transcriptions2_idx` (`transcriptionid` ASC) VISIBLE,
@@ -865,7 +865,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_conversationthreads`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_conversationthreads` (
-  `conversationthreadid` INT NOT NULL,
+  `conversationthreadid` INT NOT NULL AUTO_INCREMENT,
   `userid` INT NOT NULL,
   `starttime` DATETIME NOT NULL,
   `endtime` DATETIME NOT NULL,
@@ -886,7 +886,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_transcriptions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transcriptions` (
-  `transcriptionid` INT NOT NULL,
+  `transcriptionid` INT NOT NULL AUTO_INCREMENT,
   `dateofcreation` DATETIME NOT NULL,
   `duration(s)` INT NOT NULL,
   `status` VARCHAR(5) NOT NULL,
@@ -927,7 +927,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_cuepoints`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_cuepoints` (
-  `cuepointid` INT NOT NULL,
+  `cuepointid` INT NOT NULL AUTO_INCREMENT,
   `starttime` TIME NOT NULL,
   `endtime` TIME NOT NULL,
   `description` VARCHAR(45) NOT NULL,
@@ -946,7 +946,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_jsonpartitions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_jsonpartitions` (
-  `jsonpartitionsid` INT NOT NULL,
+  `jsonpartitionsid` INT NOT NULL AUTO_INCREMENT,
   `jsonurl` VARCHAR(250) NOT NULL,
   `transcriptionid` INT NOT NULL,
   PRIMARY KEY (`jsonpartitionsid`),
@@ -963,7 +963,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_aieventtypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_aieventtypes` (
-  `eventid` INT NOT NULL,
+  `eventid` INT NOT NULL AUTO_INCREMENT,
   `status` VARCHAR(45) NOT NULL,
   `description` VARCHAR(200) NOT NULL,
   `completed` BIT(1) NOT NULL,
@@ -975,7 +975,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_ai_interactions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_ai_interactions` (
-  `interactionid` INT NOT NULL,
+  `interactionid` INT NOT NULL AUTO_INCREMENT,
   `transcriptionid` INT NOT NULL,
   `eventid` INT NOT NULL,
   `prompt` VARCHAR(250) NOT NULL,
@@ -1003,7 +1003,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_addressasignations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_addressasignations` (
-  `addressasignationsid` INT NOT NULL,
+  `addressasignationsid` INT NOT NULL AUTO_INCREMENT,
   `entitytype` VARCHAR(50) NOT NULL,
   `entityid` INT NOT NULL,
   `addressid` INT NOT NULL,
@@ -1021,7 +1021,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_cloudservices`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_cloudservices` (
-  `cloudservicesid` INT NOT NULL,
+  `cloudservicesid` INT NOT NULL AUTO_INCREMENT,
   `aiusedurl` VARCHAR(250) NOT NULL,
   `secretkey` VARBINARY(250) NOT NULL,
   `porcentofcertainty` INT NOT NULL,
@@ -1040,7 +1040,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_datatypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_datatypes` (
-  `datatypeid` INT NOT NULL,
+  `datatypeid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `description` VARCHAR(60) NOT NULL,
   PRIMARY KEY (`datatypeid`))
@@ -1051,7 +1051,7 @@ ENGINE = InnoDB;
 -- Table `PayAssistantDB`.`paya_ai_datacollects`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_ai_datacollects` (
-  `datacollectid` INT NOT NULL,
+  `datacollectid` INT NOT NULL AUTO_INCREMENT,
   `value` VARCHAR(100) NOT NULL,
   `collecteddate` DATETIME NOT NULL,
   `datatypeid` INT NOT NULL,
@@ -1081,7 +1081,7 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_companiesroles` (
   `checksum` VARBINARY(250) NOT NULL,
   `enable` BIT(1) NOT NULL,
   `deleted` BIT(1) NOT NULL,
-  `companieroleid` VARCHAR(45) NOT NULL,
+  `companieroleid` INT NOT NULL AUTO_INCREMENT,
   `paya_roles_roleid` INT NOT NULL,
   `paya_companies_companyid` INT NOT NULL,
   PRIMARY KEY (`companieroleid`),
@@ -1098,55 +1098,6 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_companiesroles` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-DROP PROCEDURE IF EXISTS insertarusers;
-DELIMITER //
-CREATE PROCEDURE insertarusers()
-BEGIN
-    DECLARE i INT DEFAULT 0;
-    DECLARE num_users INT DEFAULT 50; 
-	DECLARE nombreusado VARCHAR(45);
-	DECLARE apellidousado VARCHAR(45);
-    DECLARE enablebit BIT; 
-    DECLARE verifiedbit BIT;
-    CREATE TEMPORARY TABLE nombres (nombre VARCHAR(45));
-    CREATE TEMPORARY TABLE apellidos (apellido VARCHAR(45));
-    
-    INSERT INTO nombres (nombre)
-    VALUES
-        ('Isaac'),('Carlos'),('David'),('Pedro'),('Juan'),('María'),('Ana'),('José'),('Roberto'),('Miguel'),('Arturo'),('Rodrigo'),('Kevin'),('José'),('Samuel'),('Viviana'),('Sofia'),('Lucia'),('Martina'),('Pabla'),('Christopher'),('Adriana'),('Anthony'),('Walter'),('Bruce'),('Carmela');
-        
-    INSERT INTO apellidos (apellido)
-    VALUES
-        ('Villalobos'),('López'),('González'),('Pérez'),('Rodríguez'),('Hernández'),('Martínez'),('Sánchez'),('Ramírez'),('Fernández'),('Cheng'),('Johnson'),('Bonilla'),('Castillo'),('Moltisanti'),('La_Cerva'),('Soprano'),('White'),('Wayne'),('Gualtieri');
-        
-    WHILE i < num_users DO
-        SELECT nombre INTO nombreusado FROM nombres ORDER BY RAND() LIMIT 1;
-        SELECT apellido INTO apellidousado FROM apellidos ORDER BY RAND() LIMIT 1;
-        SET enablebit = IF(RAND() < 0.3, 0, 1); 
-        SET verifiedbit = IF(RAND() < 0.3, 0, 1);
-        INSERT INTO `PayAssistantDB`.`paya_users` 
-        (`username`, `email`, `password`, `fname`, `lname`, `phone`, `enable`, `verified`, `creationdate`, `lastlogin`) 
-        VALUES 
-        (CONCAT(nombreusado, '_', apellidousado, FLOOR(RAND()*500)), 
-        CONCAT(nombreusado, apellidousado, FLOOR(RAND() * 2280), '@gmail.com'),
-        AES_ENCRYPT('ContraseñaSuperSecreta', 'jK3+5wGgL7eA1TRUQUITOPARACONTRASEÑASxT9KzLdq4YfX8jNwB9V'), 
-        nombreusado, apellidousado, CONCAT(FLOOR(RAND() * 100000000), '') , enablebit, verifiedbit, 
-        DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * (720 - 180 + 1)) + 180 DAY) + INTERVAL FLOOR(RAND() * 60) MINUTE + INTERVAL FLOOR(RAND() * 60) SECOND,
-        DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 180) DAY) + INTERVAL FLOOR(RAND() * 60) MINUTE + INTERVAL FLOOR(RAND() * 60) SECOND);
-        SET i = i + 1;
-    END WHILE;
-    DROP TEMPORARY TABLE IF EXISTS nombres;
-    DROP TEMPORARY TABLE IF EXISTS apellidos;
-END //
-DELIMITER ;
-
-CALL insertarusers();
-SELECT * from paya_users;
-
--- SELECT COUNT(*) AS enables_en_1 FROM paya_users WHERE enable = 1;
--- TRUNCATE TABLE paya_users;
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
