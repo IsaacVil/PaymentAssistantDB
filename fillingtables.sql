@@ -16,6 +16,8 @@ DROP PROCEDURE IF EXISTS inserttransactions;
 DROP PROCEDURE IF EXISTS insertlanguages;
 DROP PROCEDURE IF EXISTS insertcountries;
 DROP PROCEDURE IF EXISTS insertstates;
+DROP PROCEDURE IF EXISTS insertcities;
+DROP PROCEDURE IF EXISTS insertaddresses;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -513,7 +515,98 @@ END //
 DELIMITER ;
 CALL insertstates();
 SELECT * FROM paya_states;
+-- INSERT CITIES --------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
 
+CREATE PROCEDURE insertcities()
+BEGIN
+    -- Insertar las ciudades y sus stateid correspondientes
+    INSERT INTO `PayAssistantDB`.`paya_cities` 
+    (`cityname`, `stateid`)
+    VALUES 
+    ('Los Angeles', 1), ('San Francisco', 1), ('San Diego', 1),          
+    ('Houston', 2), ('Dallas', 2), ('Austin', 2),                        
+    ('New York City', 3), ('Buffalo', 3), ('Rochester', 3),             
+    ('Madrid', 4), ('Alcalá de Henares', 4), ('Getafe', 4),              
+    ('Barcelona', 5), ('LHospitalet de Llobregat', 5), ('Badalona', 5), 
+    ('Valencia', 6), ('Alicante', 6), ('Elche', 6),                      
+    ('Paris', 7), ('Versailles', 7), ('Boulogne-Billancourt', 7),        
+    ('Marseille', 8), ('Nice', 8), ('Toulon', 8),                        
+    ('Lyon', 9), ('Grenoble', 9), ('Saint-Étienne', 9),                  
+    ('Munich', 10), ('Nuremberg', 10), ('Augsburg', 10),                 
+    ('Berlin', 11), ('Potsdam', 11), ('Cottbus', 11),                    
+    ('Hamburg', 12), ('Lübeck', 12), ('Kiel', 12),                       
+    ('Beijing', 13), ('Tianjin', 13), ('Shijiazhuang', 13),             
+    ('Shanghai', 14), ('Suzhou', 14), ('Nanjing', 14),                  
+    ('Guangzhou', 15), ('Shenzhen', 15), ('Dongguan', 15),             
+    ('Tokyo', 16), ('Yokohama', 16), ('Osaka', 16),                      
+    ('Osaka', 17), ('Kobe', 17), ('Kyoto', 17),                         
+    ('Sapporo', 18), ('Hakodate', 18), ('Asahikawa', 18),              
+    ('São Paulo', 19), ('Campinas', 19), ('Santos', 19),                 
+    ('Rio de Janeiro', 20), ('Niterói', 20), ('Nova Iguaçu', 20),      
+    ('Belo Horizonte', 21), ('Uberlândia', 21), ('Contagem', 21),        
+    ('Milan', 22), ('Bergamo', 22), ('Brescia', 22),                    
+    ('Palermo', 23), ('Catania', 23), ('Messina', 23),                   
+    ('Venice', 24), ('Verona', 24), ('Padua', 24),                  
+    ('Moscow', 25), ('Krasnogorsk', 25), ('Khimki', 25),                
+    ('Saint Petersburg', 26), ('Gatchina', 26), ('Kolpino', 26),         
+    ('Novosibirsk', 27), ('Berdsk', 27), ('Iskitim', 27),            
+    ('San José', 28), ('Escazú', 28), ('Desamparados', 28),              
+    ('Alajuela', 29), ('Heredia', 29), ('San Ramón', 29),             
+    ('Cartago', 30), ('Paraíso', 30), ('La Unión', 30);              
+END //
+
+DELIMITER ;
+CALL insertcities();
+SELECT * FROM paya_cities;
+
+-- INSERT ADDRESSES ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE insertaddresses()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_addresses INT DEFAULT 100; -- Número de direcciones a insertar
+    DECLARE line1 VARCHAR(200);
+    DECLARE line2 VARCHAR(200);
+    DECLARE zipcode VARCHAR(9);
+    DECLARE cityid INT;
+    DECLARE total_cities INT;
+
+    -- Obtener el número total de ciudades
+    SET total_cities = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_cities`);
+
+    -- Verificar que la tabla paya_cities tenga registros
+    IF total_cities = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La tabla paya_cities está vacía. Ejecuta insertcities primero.';
+    END IF;
+
+    WHILE i < num_addresses DO
+        -- Generar datos aleatorios para la dirección
+        SET line1 = CONCAT(FLOOR(RAND() * 1000), ' Main St');
+        SET line2 = CONCAT('Apt ', FLOOR(RAND() * 100));
+        SET zipcode = CONCAT(FLOOR(RAND() * 100000), '');
+
+        -- Seleccionar un cityid aleatorio de manera eficiente
+        SET cityid = FLOOR(1 + RAND() * total_cities);
+
+        -- Insertar la dirección
+        INSERT INTO `PayAssistantDB`.`paya_addresses` 
+        (`line1`, `line2`, `zipcode`, `location`, `addresstype`, `cityid`)
+        VALUES 
+        (line1, line2, zipcode, POINT(RAND() * 180 - 90, RAND() * 360 - 180), 
+        ELT(FLOOR(1 + RAND() * 5), 'WORK', 'BILLING', 'SHIPPING', 'BRANCH', 'OFFICE'), 
+        cityid);
+
+        -- Incrementar el contador
+        SET i = i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+
+CALL insertaddresses();
+SELECT * FROM paya_addresses;
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
 -- TRUNCATE TABLE paya_modules;
