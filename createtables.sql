@@ -8,19 +8,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema AppAsistantDB
+-- Schema PayAssistantDB
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema AppAsistantDB
+-- Schema PayAssistantDB
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `AppAsistantDB` DEFAULT CHARACTER SET utf8 ;
-USE `AppAsistantDB` ;
+CREATE SCHEMA IF NOT EXISTS `PayAssistantDB` DEFAULT CHARACTER SET utf8 ;
+USE `PayAssistantDB` ;
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_modules`
+-- Table `PayAssistantDB`.`paya_modules`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_modules` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_modules` (
   `moduleid` TINYINT(10) NOT NULL,
   `home` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`moduleid`))
@@ -28,9 +28,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_languages`
+-- Table `PayAssistantDB`.`paya_languages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_languages` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_languages` (
   `languageid` INT NOT NULL,
   `languagename` VARCHAR(30) NOT NULL,
   `enable` BIT(1) NOT NULL,
@@ -40,9 +40,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_translations`
+-- Table `PayAssistantDB`.`paya_translations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_translations` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_translations` (
   `translationsid` INT NOT NULL,
   `translationkey` VARCHAR(50) NOT NULL,
   `caption` VARCHAR(300) NOT NULL,
@@ -56,21 +56,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_translations` (
   INDEX `paya_languages1_idx` (`languageid` ASC) VISIBLE,
   CONSTRAINT `paya_modules2`
     FOREIGN KEY (`moduleid`)
-    REFERENCES `AppAsistantDB`.`paya_modules` (`moduleid`)
+    REFERENCES `PayAssistantDB`.`paya_modules` (`moduleid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `paya_languages1`
     FOREIGN KEY (`languageid`)
-    REFERENCES `AppAsistantDB`.`paya_languages` (`languageid`)
+    REFERENCES `PayAssistantDB`.`paya_languages` (`languageid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_roles`
+-- Table `PayAssistantDB`.`paya_roles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_roles` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_roles` (
   `roleid` INT NOT NULL,
   `rolename` VARCHAR(30) NOT NULL,
   `description` VARCHAR(60) NOT NULL,
@@ -81,9 +81,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_permissions`
+-- Table `PayAssistantDB`.`paya_permissions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_permissions` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_permissions` (
   `permissionid` INT NOT NULL,
   `permissioncode` VARCHAR(10) NOT NULL,
   `description` VARCHAR(45) NOT NULL,
@@ -93,16 +93,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_permissions` (
   PRIMARY KEY (`permissionid`),
   CONSTRAINT `paya_modules1`
     FOREIGN KEY (`moduleid`)
-    REFERENCES `AppAsistantDB`.`paya_modules` (`moduleid`)
+    REFERENCES `PayAssistantDB`.`paya_modules` (`moduleid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_rolespermissions`
+-- Table `PayAssistantDB`.`paya_rolespermissions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_rolespermissions` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_rolespermissions` (
   `rolepermissionsid` INT NOT NULL,
   `asignationdate` DATETIME NOT NULL,
   `enable` BIT(1) NOT NULL,
@@ -117,21 +117,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_rolespermissions` (
   INDEX `fk_paya_rolespermissions_paya_permissions1_idx` (`permissionid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_rolespermissions_paya_roles1`
     FOREIGN KEY (`roleid`)
-    REFERENCES `AppAsistantDB`.`paya_roles` (`roleid`)
+    REFERENCES `PayAssistantDB`.`paya_roles` (`roleid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_rolespermissions_paya_permissions1`
     FOREIGN KEY (`permissionid`)
-    REFERENCES `AppAsistantDB`.`paya_permissions` (`permissionid`)
+    REFERENCES `PayAssistantDB`.`paya_permissions` (`permissionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_users`
+-- Table `PayAssistantDB`.`paya_users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_users` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_users` (
   `userid` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NULL,
   `email` VARCHAR(80) NULL,
@@ -148,9 +148,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_usersroles`
+-- Table `PayAssistantDB`.`paya_usersroles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_usersroles` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_usersroles` (
   `usersrolesid` INT NOT NULL,
   `asginationdate` DATETIME NOT NULL,
   `username` VARCHAR(45) NOT NULL,
@@ -164,21 +164,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_usersroles` (
   INDEX `fk_paya_usersroles_paya_users1_idx` (`paya_users_userid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_usersroles_paya_roles1`
     FOREIGN KEY (`roleid`)
-    REFERENCES `AppAsistantDB`.`paya_roles` (`roleid`)
+    REFERENCES `PayAssistantDB`.`paya_roles` (`roleid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_usersroles_paya_users1`
     FOREIGN KEY (`paya_users_userid`)
-    REFERENCES `AppAsistantDB`.`paya_users` (`userid`)
+    REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_companies`
+-- Table `PayAssistantDB`.`paya_companies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_companies` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_companies` (
   `companyid` INT NOT NULL,
   `companyname` VARCHAR(45) NOT NULL,
   `taxid` VARCHAR(10) NULL,
@@ -190,9 +190,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_currencies`
+-- Table `PayAssistantDB`.`paya_currencies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_currencies` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_currencies` (
   `currencyid` INT NOT NULL,
   `name` VARCHAR(50) NOT NULL,
   `acronym` VARCHAR(15) NOT NULL,
@@ -203,9 +203,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_countries`
+-- Table `PayAssistantDB`.`paya_countries`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_countries` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_countries` (
   `countryid` INT NOT NULL AUTO_INCREMENT,
   `countryname` VARCHAR(60) NOT NULL,
   `currencyid` INT NOT NULL,
@@ -215,21 +215,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_countries` (
   INDEX `fk_paya_countries_paya_languages1_idx` (`languageid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_countries_paya_currencies1`
     FOREIGN KEY (`currencyid`)
-    REFERENCES `AppAsistantDB`.`paya_currencies` (`currencyid`)
+    REFERENCES `PayAssistantDB`.`paya_currencies` (`currencyid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_countries_paya_languages1`
     FOREIGN KEY (`languageid`)
-    REFERENCES `AppAsistantDB`.`paya_languages` (`languageid`)
+    REFERENCES `PayAssistantDB`.`paya_languages` (`languageid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_states`
+-- Table `PayAssistantDB`.`paya_states`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_states` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_states` (
   `stateid` INT NOT NULL,
   `statename` VARCHAR(60) NOT NULL,
   `paya_countries_countryid` INT NOT NULL,
@@ -237,16 +237,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_states` (
   INDEX `fk_paya_states_paya_countries1_idx` (`paya_countries_countryid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_states_paya_countries1`
     FOREIGN KEY (`paya_countries_countryid`)
-    REFERENCES `AppAsistantDB`.`paya_countries` (`countryid`)
+    REFERENCES `PayAssistantDB`.`paya_countries` (`countryid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_cities`
+-- Table `PayAssistantDB`.`paya_cities`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_cities` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_cities` (
   `cityid` INT NOT NULL AUTO_INCREMENT,
   `cityname` VARCHAR(60) NOT NULL,
   `stateid` INT NOT NULL,
@@ -254,16 +254,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_cities` (
   INDEX `fk_paya_cities_paya_states1_idx` (`stateid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_cities_paya_states1`
     FOREIGN KEY (`stateid`)
-    REFERENCES `AppAsistantDB`.`paya_states` (`stateid`)
+    REFERENCES `PayAssistantDB`.`paya_states` (`stateid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_addresses`
+-- Table `PayAssistantDB`.`paya_addresses`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_addresses` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_addresses` (
   `addressid` INT NOT NULL,
   `line1` VARCHAR(200) NOT NULL,
   `line2` VARCHAR(200) NOT NULL,
@@ -275,16 +275,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_addresses` (
   INDEX `fk_paya_addresses_paya_cities1_idx` (`cityid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_addresses_paya_cities1`
     FOREIGN KEY (`cityid`)
-    REFERENCES `AppAsistantDB`.`paya_cities` (`cityid`)
+    REFERENCES `PayAssistantDB`.`paya_cities` (`cityid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_userspermissions`
+-- Table `PayAssistantDB`.`paya_userspermissions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_userspermissions` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_userspermissions` (
   `userpermissionsid` INT NOT NULL,
   `asignateddate` DATETIME NOT NULL,
   `username` VARCHAR(45) NOT NULL,
@@ -298,21 +298,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_userspermissions` (
   INDEX `paya_permissions2_idx` (`permissionid` ASC) VISIBLE,
   CONSTRAINT `paya_users2`
     FOREIGN KEY (`userid`)
-    REFERENCES `AppAsistantDB`.`paya_users` (`userid`)
+    REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `paya_permissions2`
     FOREIGN KEY (`permissionid`)
-    REFERENCES `AppAsistantDB`.`paya_permissions` (`permissionid`)
+    REFERENCES `PayAssistantDB`.`paya_permissions` (`permissionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_mediatypes`
+-- Table `PayAssistantDB`.`paya_mediatypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_mediatypes` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_mediatypes` (
   `mediatypeid` INT NOT NULL,
   `name` VARCHAR(20) NOT NULL,
   `formattype` VARCHAR(45) NOT NULL,
@@ -321,9 +321,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_mediafiles`
+-- Table `PayAssistantDB`.`paya_mediafiles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_mediafiles` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_mediafiles` (
   `mediafileid` INT NOT NULL,
   `userid` INT NOT NULL,
   `filename` VARCHAR(60) NOT NULL,
@@ -336,21 +336,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_mediafiles` (
   INDEX `fk_paya_mediafiles_paya_mediatypes1_idx` (`mediatypeid` ASC) VISIBLE,
   CONSTRAINT `paya_users3`
     FOREIGN KEY (`userid`)
-    REFERENCES `AppAsistantDB`.`paya_users` (`userid`)
+    REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_mediafiles_paya_mediatypes1`
     FOREIGN KEY (`mediatypeid`)
-    REFERENCES `AppAsistantDB`.`paya_mediatypes` (`mediatypeid`)
+    REFERENCES `PayAssistantDB`.`paya_mediatypes` (`mediatypeid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_mediafilestatus`
+-- Table `PayAssistantDB`.`paya_mediafilestatus`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_mediafilestatus` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_mediafilestatus` (
   `mediafilestatusid` INT NOT NULL,
   `mediafileid` INT NOT NULL,
   `name` VARCHAR(100) NOT NULL,
@@ -359,16 +359,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_mediafilestatus` (
   INDEX `paya_mediafiles2_idx` (`mediafileid` ASC) VISIBLE,
   CONSTRAINT `paya_mediafiles2`
     FOREIGN KEY (`mediafileid`)
-    REFERENCES `AppAsistantDB`.`paya_mediafiles` (`mediafileid`)
+    REFERENCES `PayAssistantDB`.`paya_mediafiles` (`mediafileid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_paymentmethods`
+-- Table `PayAssistantDB`.`paya_paymentmethods`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_paymentmethods` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_paymentmethods` (
   `paymentmethodsid` INT NOT NULL,
   `name` VARCHAR(50) NOT NULL,
   `apiurl` VARCHAR(180) NOT NULL,
@@ -381,9 +381,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_availablemethods`
+-- Table `PayAssistantDB`.`paya_availablemethods`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_availablemethods` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_availablemethods` (
   `availablemethodsid` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `apiurl` VARCHAR(180) NOT NULL,
@@ -397,21 +397,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_availablemethods` (
   INDEX `fk_paya_availablemethods_paya_paymentmethods1_idx` (`paymentmethodsid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_availablemethods_paya_users1`
     FOREIGN KEY (`userid`)
-    REFERENCES `AppAsistantDB`.`paya_users` (`userid`)
+    REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_availablemethods_paya_paymentmethods1`
     FOREIGN KEY (`paymentmethodsid`)
-    REFERENCES `AppAsistantDB`.`paya_paymentmethods` (`paymentmethodsid`)
+    REFERENCES `PayAssistantDB`.`paya_paymentmethods` (`paymentmethodsid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_payments`
+-- Table `PayAssistantDB`.`paya_payments`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_payments` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_payments` (
   `paymentsid` BIGINT NOT NULL,
   `amount` VARCHAR(120) NOT NULL,
   `realamount` VARCHAR(120) NOT NULL,
@@ -432,21 +432,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_payments` (
   INDEX `fk_paya_payments_paya_availablemethods1_idx` (`availablemethodsid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_payments_paya_paymentmethods1`
     FOREIGN KEY (`paymentmethodsid`)
-    REFERENCES `AppAsistantDB`.`paya_paymentmethods` (`paymentmethodsid`)
+    REFERENCES `PayAssistantDB`.`paya_paymentmethods` (`paymentmethodsid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_payments_paya_availablemethods1`
     FOREIGN KEY (`availablemethodsid`)
-    REFERENCES `AppAsistantDB`.`paya_availablemethods` (`availablemethodsid`)
+    REFERENCES `PayAssistantDB`.`paya_availablemethods` (`availablemethodsid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_conctactinfotypes`
+-- Table `PayAssistantDB`.`paya_conctactinfotypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_conctactinfotypes` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_conctactinfotypes` (
   `contactinfotypeid` INT NOT NULL,
   `typename` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`contactinfotypeid`))
@@ -454,9 +454,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_contactinfo`
+-- Table `PayAssistantDB`.`paya_contactinfo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_contactinfo` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_contactinfo` (
   `contactinfoid` INT NOT NULL,
   `value` VARCHAR(100) NOT NULL,
   `enable` BIT(1) NOT NULL,
@@ -468,21 +468,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_contactinfo` (
   INDEX `paya_conctactinfotypes1_idx` (`contactinfotypeid` ASC) VISIBLE,
   CONSTRAINT `paya_companies4`
     FOREIGN KEY (`companyid`)
-    REFERENCES `AppAsistantDB`.`paya_companies` (`companyid`)
+    REFERENCES `PayAssistantDB`.`paya_companies` (`companyid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `paya_conctactinfotypes1`
     FOREIGN KEY (`contactinfotypeid`)
-    REFERENCES `AppAsistantDB`.`paya_conctactinfotypes` (`contactinfotypeid`)
+    REFERENCES `PayAssistantDB`.`paya_conctactinfotypes` (`contactinfotypeid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_logtypes`
+-- Table `PayAssistantDB`.`paya_logtypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_logtypes` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_logtypes` (
   `logtypeid` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `ref1desc` VARCHAR(100) NOT NULL,
@@ -494,9 +494,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_logsources`
+-- Table `PayAssistantDB`.`paya_logsources`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_logsources` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_logsources` (
   `logsourcesid` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`logsourcesid`))
@@ -504,9 +504,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_logseverity`
+-- Table `PayAssistantDB`.`paya_logseverity`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_logseverity` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_logseverity` (
   `logseverityid` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`logseverityid`))
@@ -514,9 +514,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_logs`
+-- Table `PayAssistantDB`.`paya_logs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_logs` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_logs` (
   `logid` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(245) NOT NULL,
   `username` VARCHAR(45) NOT NULL,
@@ -539,31 +539,31 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_logs` (
   INDEX `fk_paya_logs_paya_users1_idx` (`userid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_logs_paya_logtypes1`
     FOREIGN KEY (`logtypeid`)
-    REFERENCES `AppAsistantDB`.`paya_logtypes` (`logtypeid`)
+    REFERENCES `PayAssistantDB`.`paya_logtypes` (`logtypeid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_logs_paya_logsources1`
     FOREIGN KEY (`logsourcesid`)
-    REFERENCES `AppAsistantDB`.`paya_logsources` (`logsourcesid`)
+    REFERENCES `PayAssistantDB`.`paya_logsources` (`logsourcesid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_logs_paya_logseverity1`
     FOREIGN KEY (`logseverityid`)
-    REFERENCES `AppAsistantDB`.`paya_logseverity` (`logseverityid`)
+    REFERENCES `PayAssistantDB`.`paya_logseverity` (`logseverityid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_logs_paya_users1`
     FOREIGN KEY (`userid`)
-    REFERENCES `AppAsistantDB`.`paya_users` (`userid`)
+    REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_transactionsubtypes`
+-- Table `PayAssistantDB`.`paya_transactionsubtypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_transactionsubtypes` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transactionsubtypes` (
   `transactionsubtypeid` INT NOT NULL,
   `name` VARCHAR(25) NOT NULL,
   PRIMARY KEY (`transactionsubtypeid`))
@@ -571,9 +571,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_transactiontypes`
+-- Table `PayAssistantDB`.`paya_transactiontypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_transactiontypes` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transactiontypes` (
   `transactiontypeid` INT NOT NULL,
   `name` VARCHAR(25) NOT NULL,
   PRIMARY KEY (`transactiontypeid`))
@@ -581,9 +581,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_exchangerates`
+-- Table `PayAssistantDB`.`paya_exchangerates`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_exchangerates` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_exchangerates` (
   `exchangerateid` INT NOT NULL,
   `startdate` DATETIME NOT NULL,
   `enddate` DATETIME NOT NULL,
@@ -596,21 +596,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_exchangerates` (
   INDEX `fk_paya_exchangerates_paya_currencies2_idx` (`currencyiddestiny` ASC) VISIBLE,
   CONSTRAINT `fk_paya_exchangerates_paya_currencies1`
     FOREIGN KEY (`currencyidsource`)
-    REFERENCES `AppAsistantDB`.`paya_currencies` (`currencyid`)
+    REFERENCES `PayAssistantDB`.`paya_currencies` (`currencyid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_exchangerates_paya_currencies2`
     FOREIGN KEY (`currencyiddestiny`)
-    REFERENCES `AppAsistantDB`.`paya_currencies` (`currencyid`)
+    REFERENCES `PayAssistantDB`.`paya_currencies` (`currencyid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_transactions`
+-- Table `PayAssistantDB`.`paya_transactions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_transactions` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transactions` (
   `transactionid` BIGINT(10) NOT NULL,
   `name` VARCHAR(40) NOT NULL,
   `amount` DECIMAL NOT NULL,
@@ -635,41 +635,41 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_transactions` (
   INDEX `fk_paya_transactions_paya_users1_idx` (`userid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_transactions_paya_transactionsubtypes1`
     FOREIGN KEY (`transactionsubtypeid`)
-    REFERENCES `AppAsistantDB`.`paya_transactionsubtypes` (`transactionsubtypeid`)
+    REFERENCES `PayAssistantDB`.`paya_transactionsubtypes` (`transactionsubtypeid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_transactions_paya_transactiontypes1`
     FOREIGN KEY (`transactiontypeid`)
-    REFERENCES `AppAsistantDB`.`paya_transactiontypes` (`transactiontypeid`)
+    REFERENCES `PayAssistantDB`.`paya_transactiontypes` (`transactiontypeid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_transactions_paya_exchangerates1`
     FOREIGN KEY (`exchangerateid`)
-    REFERENCES `AppAsistantDB`.`paya_exchangerates` (`exchangerateid`)
+    REFERENCES `PayAssistantDB`.`paya_exchangerates` (`exchangerateid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_transactions_paya_currencies1`
     FOREIGN KEY (`currencyid`)
-    REFERENCES `AppAsistantDB`.`paya_currencies` (`currencyid`)
+    REFERENCES `PayAssistantDB`.`paya_currencies` (`currencyid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_transactions_paya_payments1`
     FOREIGN KEY (`paymentsid`)
-    REFERENCES `AppAsistantDB`.`paya_payments` (`paymentsid`)
+    REFERENCES `PayAssistantDB`.`paya_payments` (`paymentsid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_transactions_paya_users1`
     FOREIGN KEY (`userid`)
-    REFERENCES `AppAsistantDB`.`paya_users` (`userid`)
+    REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_subscriptions`
+-- Table `PayAssistantDB`.`paya_subscriptions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_subscriptions` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_subscriptions` (
   `subscriptionid` INT NOT NULL,
   `description` VARCHAR(100) NOT NULL,
   `logoURL` VARCHAR(250) NOT NULL,
@@ -681,9 +681,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_schedules`
+-- Table `PayAssistantDB`.`paya_schedules`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_schedules` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_schedules` (
   `scheduleid` INT NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `recurrencytype` ENUM("DAILY", "WEEKLY", "MONTHLY", "YEARLY", "CUSTOM") NOT NULL,
@@ -696,9 +696,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_scheduledetails`
+-- Table `PayAssistantDB`.`paya_scheduledetails`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_scheduledetails` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_scheduledetails` (
   `scheduledetailsid` INT NOT NULL,
   `deleted` BIT(1) NOT NULL,
   `basedate` DATETIME NOT NULL,
@@ -710,16 +710,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_scheduledetails` (
   INDEX `fk_paya_scheduledetails_paya_schedules1_idx` (`scheduleid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_scheduledetails_paya_schedules1`
     FOREIGN KEY (`scheduleid`)
-    REFERENCES `AppAsistantDB`.`paya_schedules` (`scheduleid`)
+    REFERENCES `PayAssistantDB`.`paya_schedules` (`scheduleid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_planprices`
+-- Table `PayAssistantDB`.`paya_planprices`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_planprices` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_planprices` (
   `planpriceid` INT NOT NULL,
   `amount` DECIMAL NOT NULL,
   `current` BIT(1) NOT NULL,
@@ -734,26 +734,26 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_planprices` (
   INDEX `fk_paya_planprices_paya_currencies1_idx` (`currencyid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_planprices_paya_subscriptions1`
     FOREIGN KEY (`subscriptionid`)
-    REFERENCES `AppAsistantDB`.`paya_subscriptions` (`subscriptionid`)
+    REFERENCES `PayAssistantDB`.`paya_subscriptions` (`subscriptionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_planprices_paya_scheduledetails1`
     FOREIGN KEY (`scheduledetailsid`)
-    REFERENCES `AppAsistantDB`.`paya_scheduledetails` (`scheduledetailsid`)
+    REFERENCES `PayAssistantDB`.`paya_scheduledetails` (`scheduledetailsid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_planprices_paya_currencies1`
     FOREIGN KEY (`currencyid`)
-    REFERENCES `AppAsistantDB`.`paya_currencies` (`currencyid`)
+    REFERENCES `PayAssistantDB`.`paya_currencies` (`currencyid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_plans`
+-- Table `PayAssistantDB`.`paya_plans`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_plans` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_plans` (
   `planid` INT NOT NULL,
   `adquisition` DATETIME NOT NULL,
   `enabled` BIT(1) NOT NULL,
@@ -766,26 +766,26 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_plans` (
   INDEX `fk_paya_plans_paya_scheduledetails1_idx` (`scheduledetailsid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_plans_paya_users1`
     FOREIGN KEY (`userid`)
-    REFERENCES `AppAsistantDB`.`paya_users` (`userid`)
+    REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_plans_paya_planprices1`
     FOREIGN KEY (`planpriceid`)
-    REFERENCES `AppAsistantDB`.`paya_planprices` (`planpriceid`)
+    REFERENCES `PayAssistantDB`.`paya_planprices` (`planpriceid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_plans_paya_scheduledetails1`
     FOREIGN KEY (`scheduledetailsid`)
-    REFERENCES `AppAsistantDB`.`paya_scheduledetails` (`scheduledetailsid`)
+    REFERENCES `PayAssistantDB`.`paya_scheduledetails` (`scheduledetailsid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_planfeatures`
+-- Table `PayAssistantDB`.`paya_planfeatures`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_planfeatures` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_planfeatures` (
   `planfeatureid` INT NOT NULL,
   `description` VARCHAR(100) NOT NULL,
   `enabled` BIT(1) NOT NULL,
@@ -795,9 +795,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_personplanlimits`
+-- Table `PayAssistantDB`.`paya_personplanlimits`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_personplanlimits` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_personplanlimits` (
   `planlimits` INT NOT NULL,
   `limit` VARCHAR(10) NOT NULL,
   `enabled` BIT(1) NOT NULL,
@@ -809,21 +809,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_personplanlimits` (
   INDEX `fk_paya_personplanlimits_paya_planfeatures1_idx` (`planfeatureid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_personplanlimits_paya_plans1`
     FOREIGN KEY (`planid`)
-    REFERENCES `AppAsistantDB`.`paya_plans` (`planid`)
+    REFERENCES `PayAssistantDB`.`paya_plans` (`planid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_personplanlimits_paya_planfeatures1`
     FOREIGN KEY (`planfeatureid`)
-    REFERENCES `AppAsistantDB`.`paya_planfeatures` (`planfeatureid`)
+    REFERENCES `PayAssistantDB`.`paya_planfeatures` (`planfeatureid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_featuresperplan`
+-- Table `PayAssistantDB`.`paya_featuresperplan`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_featuresperplan` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_featuresperplan` (
   `featuresperplanid` INT NOT NULL,
   `value` VARCHAR(100) NOT NULL,
   `enabled` BIT(1) NOT NULL,
@@ -834,37 +834,37 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_featuresperplan` (
   INDEX `fk_paya_featuresperplan_paya_subscriptions1_idx` (`subscriptionid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_featuresperplan_paya_planfeatures1`
     FOREIGN KEY (`planfeatureid`)
-    REFERENCES `AppAsistantDB`.`paya_planfeatures` (`planfeatureid`)
+    REFERENCES `PayAssistantDB`.`paya_planfeatures` (`planfeatureid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_featuresperplan_paya_subscriptions1`
     FOREIGN KEY (`subscriptionid`)
-    REFERENCES `AppAsistantDB`.`paya_subscriptions` (`subscriptionid`)
+    REFERENCES `PayAssistantDB`.`paya_subscriptions` (`subscriptionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_audio`
+-- Table `PayAssistantDB`.`paya_audio`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_audio` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_audio` (
   `usersaudioid` INT NOT NULL,
   `transcriptionid` INT NOT NULL,
   PRIMARY KEY (`usersaudioid`),
   INDEX `paya_transcriptions2_idx` (`transcriptionid` ASC) VISIBLE,
   CONSTRAINT `paya_transcriptions2`
     FOREIGN KEY (`transcriptionid`)
-    REFERENCES `AppAsistantDB`.`paya_transcriptions` (`transcriptionid`)
+    REFERENCES `PayAssistantDB`.`paya_transcriptions` (`transcriptionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_conversationthreads`
+-- Table `PayAssistantDB`.`paya_conversationthreads`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_conversationthreads` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_conversationthreads` (
   `conversationthreadid` INT NOT NULL,
   `userid` INT NOT NULL,
   `starttime` DATETIME NOT NULL,
@@ -876,16 +876,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_conversationthreads` (
   INDEX `fk_paya_conversationthreads_paya_users1_idx` (`userid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_conversationthreads_paya_users1`
     FOREIGN KEY (`userid`)
-    REFERENCES `AppAsistantDB`.`paya_users` (`userid`)
+    REFERENCES `PayAssistantDB`.`paya_users` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_transcriptions`
+-- Table `PayAssistantDB`.`paya_transcriptions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_transcriptions` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transcriptions` (
   `transcriptionid` INT NOT NULL,
   `dateofcreation` DATETIME NOT NULL,
   `duration(s)` INT NOT NULL,
@@ -902,31 +902,31 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_transcriptions` (
   INDEX `fk_paya_transcriptions_paya_conversationthreads1_idx` (`conversationthreadid` ASC) VISIBLE,
   CONSTRAINT `paya_usersaudio1`
     FOREIGN KEY (`usersaudioid`)
-    REFERENCES `AppAsistantDB`.`paya_audio` (`usersaudioid`)
+    REFERENCES `PayAssistantDB`.`paya_audio` (`usersaudioid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `paya_languages2`
     FOREIGN KEY (`languageid`)
-    REFERENCES `AppAsistantDB`.`paya_languages` (`languageid`)
+    REFERENCES `PayAssistantDB`.`paya_languages` (`languageid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_transcriptions_paya_mediafiles1`
     FOREIGN KEY (`mediafile`)
-    REFERENCES `AppAsistantDB`.`paya_mediafiles` (`mediafileid`)
+    REFERENCES `PayAssistantDB`.`paya_mediafiles` (`mediafileid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_transcriptions_paya_conversationthreads1`
     FOREIGN KEY (`conversationthreadid`)
-    REFERENCES `AppAsistantDB`.`paya_conversationthreads` (`conversationthreadid`)
+    REFERENCES `PayAssistantDB`.`paya_conversationthreads` (`conversationthreadid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_cuepoints`
+-- Table `PayAssistantDB`.`paya_cuepoints`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_cuepoints` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_cuepoints` (
   `cuepointid` INT NOT NULL,
   `starttime` TIME NOT NULL,
   `endtime` TIME NOT NULL,
@@ -936,16 +936,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_cuepoints` (
   INDEX `paya_usersaudio2_idx` (`usersaudioid` ASC) VISIBLE,
   CONSTRAINT `paya_usersaudio2`
     FOREIGN KEY (`usersaudioid`)
-    REFERENCES `AppAsistantDB`.`paya_audio` (`usersaudioid`)
+    REFERENCES `PayAssistantDB`.`paya_audio` (`usersaudioid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_jsonpartitions`
+-- Table `PayAssistantDB`.`paya_jsonpartitions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_jsonpartitions` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_jsonpartitions` (
   `jsonpartitionsid` INT NOT NULL,
   `jsonurl` VARCHAR(250) NOT NULL,
   `transcriptionid` INT NOT NULL,
@@ -953,16 +953,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_jsonpartitions` (
   INDEX `paya_transcriptions1_idx` (`transcriptionid` ASC) VISIBLE,
   CONSTRAINT `paya_transcriptions1`
     FOREIGN KEY (`transcriptionid`)
-    REFERENCES `AppAsistantDB`.`paya_transcriptions` (`transcriptionid`)
+    REFERENCES `PayAssistantDB`.`paya_transcriptions` (`transcriptionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_aieventtypes`
+-- Table `PayAssistantDB`.`paya_aieventtypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_aieventtypes` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_aieventtypes` (
   `eventid` INT NOT NULL,
   `status` VARCHAR(45) NOT NULL,
   `description` VARCHAR(200) NOT NULL,
@@ -972,9 +972,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_ai_interactions`
+-- Table `PayAssistantDB`.`paya_ai_interactions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_ai_interactions` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_ai_interactions` (
   `interactionid` INT NOT NULL,
   `transcriptionid` INT NOT NULL,
   `eventid` INT NOT NULL,
@@ -988,21 +988,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_ai_interactions` (
   INDEX `fk_paya_ai_interactions_paya_aieventtypes1_idx` (`eventid` ASC) VISIBLE,
   CONSTRAINT `paya_transcriptions3`
     FOREIGN KEY (`transcriptionid`)
-    REFERENCES `AppAsistantDB`.`paya_transcriptions` (`transcriptionid`)
+    REFERENCES `PayAssistantDB`.`paya_transcriptions` (`transcriptionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_ai_interactions_paya_aieventtypes1`
     FOREIGN KEY (`eventid`)
-    REFERENCES `AppAsistantDB`.`paya_aieventtypes` (`eventid`)
+    REFERENCES `PayAssistantDB`.`paya_aieventtypes` (`eventid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_addressasignations`
+-- Table `PayAssistantDB`.`paya_addressasignations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_addressasignations` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_addressasignations` (
   `addressasignationsid` INT NOT NULL,
   `entitytype` VARCHAR(50) NOT NULL,
   `entityid` INT NOT NULL,
@@ -1011,16 +1011,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_addressasignations` (
   INDEX `fk_paya_addressasignations_paya_addresses1_idx` (`addressid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_addressasignations_paya_addresses1`
     FOREIGN KEY (`addressid`)
-    REFERENCES `AppAsistantDB`.`paya_addresses` (`addressid`)
+    REFERENCES `PayAssistantDB`.`paya_addresses` (`addressid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_cloudservices`
+-- Table `PayAssistantDB`.`paya_cloudservices`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_cloudservices` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_cloudservices` (
   `cloudservicesid` INT NOT NULL,
   `aiusedurl` VARCHAR(250) NOT NULL,
   `secretkey` VARBINARY(250) NOT NULL,
@@ -1030,16 +1030,16 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_cloudservices` (
   INDEX `paya_transcriptions4_idx` (`transcriptionid` ASC) VISIBLE,
   CONSTRAINT `paya_transcriptions4`
     FOREIGN KEY (`transcriptionid`)
-    REFERENCES `AppAsistantDB`.`paya_transcriptions` (`transcriptionid`)
+    REFERENCES `PayAssistantDB`.`paya_transcriptions` (`transcriptionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_datatypes`
+-- Table `PayAssistantDB`.`paya_datatypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_datatypes` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_datatypes` (
   `datatypeid` INT NOT NULL,
   `name` VARCHAR(50) NOT NULL,
   `description` VARCHAR(60) NOT NULL,
@@ -1048,9 +1048,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_ai_datacollects`
+-- Table `PayAssistantDB`.`paya_ai_datacollects`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_ai_datacollects` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_ai_datacollects` (
   `datacollectid` INT NOT NULL,
   `value` VARCHAR(100) NOT NULL,
   `collecteddate` DATETIME NOT NULL,
@@ -1061,21 +1061,21 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_ai_datacollects` (
   INDEX `fk_paya_ai_datacollects_paya_ai_interactions1_idx` (`interactionid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_ai_datacollects_paya_datatypes2`
     FOREIGN KEY (`datatypeid`)
-    REFERENCES `AppAsistantDB`.`paya_datatypes` (`datatypeid`)
+    REFERENCES `PayAssistantDB`.`paya_datatypes` (`datatypeid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_ai_datacollects_paya_ai_interactions1`
     FOREIGN KEY (`interactionid`)
-    REFERENCES `AppAsistantDB`.`paya_ai_interactions` (`interactionid`)
+    REFERENCES `PayAssistantDB`.`paya_ai_interactions` (`interactionid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `AppAsistantDB`.`paya_companiesroles`
+-- Table `PayAssistantDB`.`paya_companiesroles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_companiesroles` (
+CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_companiesroles` (
   `asginationdate` DATETIME NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `checksum` VARBINARY(250) NOT NULL,
@@ -1089,16 +1089,63 @@ CREATE TABLE IF NOT EXISTS `AppAsistantDB`.`paya_companiesroles` (
   INDEX `fk_paya_companiesroles_paya_companies1_idx` (`paya_companies_companyid` ASC) VISIBLE,
   CONSTRAINT `fk_paya_companiesroles_paya_roles1`
     FOREIGN KEY (`paya_roles_roleid`)
-    REFERENCES `AppAsistantDB`.`paya_roles` (`roleid`)
+    REFERENCES `PayAssistantDB`.`paya_roles` (`roleid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_paya_companiesroles_paya_companies1`
     FOREIGN KEY (`paya_companies_companyid`)
-    REFERENCES `AppAsistantDB`.`paya_companies` (`companyid`)
+    REFERENCES `PayAssistantDB`.`paya_companies` (`companyid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+DROP PROCEDURE IF EXISTS insertarusers;
+DELIMITER //
+CREATE PROCEDURE insertarusers()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_users INT DEFAULT 50; 
+	DECLARE nombreusado VARCHAR(45);
+	DECLARE apellidousado VARCHAR(45);
+    DECLARE enablebit BIT; 
+    DECLARE verifiedbit BIT;
+    CREATE TEMPORARY TABLE nombres (nombre VARCHAR(45));
+    CREATE TEMPORARY TABLE apellidos (apellido VARCHAR(45));
+    
+    INSERT INTO nombres (nombre)
+    VALUES
+        ('Isaac'),('Carlos'),('David'),('Pedro'),('Juan'),('María'),('Ana'),('José'),('Roberto'),('Miguel'),('Arturo'),('Rodrigo'),('Kevin'),('José'),('Samuel'),('Viviana'),('Sofia'),('Lucia'),('Martina'),('Pabla'),('Christopher'),('Adriana'),('Anthony'),('Walter'),('Bruce'),('Carmela');
+        
+    INSERT INTO apellidos (apellido)
+    VALUES
+        ('Villalobos'),('López'),('González'),('Pérez'),('Rodríguez'),('Hernández'),('Martínez'),('Sánchez'),('Ramírez'),('Fernández'),('Cheng'),('Johnson'),('Bonilla'),('Castillo'),('Moltisanti'),('La_Cerva'),('Soprano'),('White'),('Wayne'),('Gualtieri');
+        
+    WHILE i < num_users DO
+        SELECT nombre INTO nombreusado FROM nombres ORDER BY RAND() LIMIT 1;
+        SELECT apellido INTO apellidousado FROM apellidos ORDER BY RAND() LIMIT 1;
+        SET enablebit = IF(RAND() < 0.3, 0, 1); 
+        SET verifiedbit = IF(RAND() < 0.3, 0, 1);
+        INSERT INTO `PayAssistantDB`.`paya_users` 
+        (`username`, `email`, `password`, `fname`, `lname`, `phone`, `enable`, `verified`, `creationdate`, `lastlogin`) 
+        VALUES 
+        (CONCAT(nombreusado, '_', apellidousado, FLOOR(RAND()*500)), 
+        CONCAT(nombreusado, apellidousado, FLOOR(RAND() * 2280), '@gmail.com'),
+        AES_ENCRYPT('ContraseñaSuperSecreta', 'jK3+5wGgL7eA1TRUQUITOPARACONTRASEÑASxT9KzLdq4YfX8jNwB9V'), 
+        nombreusado, apellidousado, CONCAT(FLOOR(RAND() * 100000000), '') , enablebit, verifiedbit, 
+        DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * (720 - 180 + 1)) + 180 DAY) + INTERVAL FLOOR(RAND() * 60) MINUTE + INTERVAL FLOOR(RAND() * 60) SECOND,
+        DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 180) DAY) + INTERVAL FLOOR(RAND() * 60) MINUTE + INTERVAL FLOOR(RAND() * 60) SECOND);
+        SET i = i + 1;
+    END WHILE;
+    DROP TEMPORARY TABLE IF EXISTS nombres;
+    DROP TEMPORARY TABLE IF EXISTS apellidos;
+END //
+DELIMITER ;
+
+CALL insertarusers();
+SELECT * from paya_users;
+
+-- SELECT COUNT(*) AS enables_en_1 FROM paya_users WHERE enable = 1;
+-- TRUNCATE TABLE paya_users;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
