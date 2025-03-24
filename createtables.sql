@@ -879,7 +879,7 @@ CREATE TABLE IF NOT EXISTS `PayAssistantDB`.`paya_transcriptions` (
   `duration(s)` INT NOT NULL,
   `status` VARCHAR(5) NOT NULL,
   `transcriptionurl` VARCHAR(250) NOT NULL,
-  `usersaudioid` INT NOT NULL,
+  `usersaudioid` INT NULL,
   `languageid` INT NOT NULL,
   `mediafile` INT NOT NULL,
   `conversationthreadid` INT NOT NULL,
