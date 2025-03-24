@@ -21,6 +21,8 @@ DROP PROCEDURE IF EXISTS insertaddresses;
 DROP PROCEDURE IF EXISTS insertaddressasignations;
 DROP PROCEDURE IF EXISTS insertmediatypes;
 DROP PROCEDURE IF EXISTS insertmediafiles;
+DROP PROCEDURE IF EXISTS insertconversationthreads;
+DROP PROCEDURE IF EXISTS insertaieventtypes; 
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -747,7 +749,61 @@ END //
 DELIMITER ;
 CALL insertconversationthreads();
 SELECT * FROM paya_conversationthreads;
+-- INSERT AIEVENTTYPES ---------------------------------------------------------------------------------------------------------------------
+DELIMITER //
 
+CREATE PROCEDURE insertaieventtypes()
+BEGIN
+    -- Insertar tipos de eventos de IA para una aplicación de pagos con reconocimiento de voz
+    INSERT INTO `PayAssistantDB`.`paya_aieventtypes` 
+    (`status`, `description`, `completed`)
+    VALUES 
+    ('Success', 'Procesamiento de pago completado exitosamente mediante reconocimiento de voz', 1),
+    ('Failed', 'Procesamiento de pago fallido debido a un error en el reconocimiento de voz', 0),
+    ('Pending', 'Procesamiento de pago pendiente de confirmación por reconocimiento de voz', 0),
+    ('Success', 'Autenticación de usuario completada exitosamente mediante reconocimiento de voz', 1),
+    ('Failed', 'Autenticación de usuario fallida debido a una voz no reconocida', 0),
+    ('Pending', 'Autenticación de usuario pendiente de verificación por reconocimiento de voz', 0),
+    ('Success', 'Transacción monetaria completada exitosamente con asistencia de IA', 1),
+    ('Failed', 'Transacción monetaria fallida debido a un error en la validación de la IA', 0),
+    ('Failed', 'Error en la detección de la moneda especificada por el usuario', 0),
+    ('Failed', 'Fallo en la validación de la fecha de pago proporcionada por el usuario', 0),
+    ('Failed', 'Error en la interpretación de la descripción del pago', 0),
+    ('Failed', 'Fallo en la conexión con el servidor de procesamiento de pagos', 0),
+    ('Failed', 'Error en la generación del comprobante de pago', 0),
+    ('Failed', 'Fallo en la actualización del saldo después del pago', 0),
+    ('Failed', 'Error en la interpretación de la dirección de facturación', 0),
+    ('Failed', 'Fallo en la verificación de la tarjeta de crédito mencionada por el usuario', 0),
+    ('Failed', 'Error en la interpretación del código de seguridad de la tarjeta', 0),
+    ('Failed', 'Fallo en la autenticación biométrica adicional requerida', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de pago recurrente', 0),
+    ('Failed', 'Fallo en la cancelación de un pago recurrente', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de reembolso', 0),
+    ('Failed', 'Fallo en la generación del reporte de transacciones mensuales', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de límite de gasto', 0),
+    ('Failed', 'Fallo en la aplicación de un descuento mencionado por el usuario', 0),
+    ('Failed', 'Error en la interpretación de la divisa para conversión', 0),
+    ('Failed', 'Fallo en la conversión de moneda debido a tasas no actualizadas', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de pago a un contacto', 0),
+    ('Failed', 'Fallo en la verificación del destinatario del pago', 0),
+    ('Failed', 'Error en la interpretación de la referencia de pago', 0),
+    ('Failed', 'Fallo en la generación de la alerta de pago atrasado', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de historial de transacciones', 0),
+    ('Failed', 'Fallo en la generación de la alerta de límite de gasto excedido', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de bloqueo de tarjeta', 0),
+    ('Failed', 'Fallo en la activación de una nueva tarjeta', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de cambio de PIN', 0),
+    ('Failed', 'Fallo en la aplicación de una promoción mencionada por el usuario', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de pago fraccionado', 0),
+    ('Failed', 'Fallo en la división del pago entre múltiples cuentas', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de pago en efectivo', 0),
+    ('Failed', 'Fallo en la generación del código QR para pago', 0),
+    ('Failed', 'Error en la interpretación de la solicitud de pago con criptomonedas', 0);
+END //
+
+DELIMITER ;
+CALL insertaieventtypes();
+SELECT * FROM paya_aieventtypes;
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
 -- TRUNCATE TABLE paya_modules;
