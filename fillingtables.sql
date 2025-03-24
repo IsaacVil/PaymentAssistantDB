@@ -804,6 +804,55 @@ END //
 DELIMITER ;
 CALL insertaieventtypes();
 SELECT * FROM paya_aieventtypes;
+
+-- INSERT TRANSCRIPTIONS -------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE inserttranscriptions()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_transcriptions INT DEFAULT 100; 
+    DECLARE dateofcreation DATETIME;
+    DECLARE duration INT;
+    DECLARE status VARCHAR(5);
+    DECLARE transcriptionurl VARCHAR(250);
+    DECLARE languageid INT;
+    DECLARE mediafile INT;
+    DECLARE conversationthreadid INT;
+
+    -- Obtención de de usuarios, idiomas, archivos multimedia y hilos de conversación
+    DECLARE num_users INT;
+    DECLARE num_languages INT;
+    DECLARE num_mediafiles INT;
+    DECLARE num_threads INT;
+
+    SET num_users = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_users`);
+    SET num_languages = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_languages`);
+    SET num_mediafiles = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_mediafiles`);
+    SET num_threads = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_conversationthreads`);
+
+
+    WHILE i < num_transcriptions DO
+        SET dateofcreation = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY); 
+        SET duration = FLOOR(RAND() * 600); 
+        SET status = ELT(FLOOR(1 + RAND() * 3), 'DONE', 'PEND', 'FAIL'); 
+        SET transcriptionurl = CONCAT('https://storage.example.com/transcriptions/', i + 1);
+        SET languageid = FLOOR(1 + RAND() * num_languages);
+        SET mediafile = FLOOR(1 + RAND() * num_mediafiles);
+        SET conversationthreadid = FLOOR(1 + RAND() * num_threads);
+
+        INSERT INTO `PayAssistantDB`.`paya_transcriptions` 
+        (`dateofcreation`, `duration(s)`, `status`, `transcriptionurl`, `languageid`, `mediafile`, `conversationthreadid`)
+        VALUES 
+        (dateofcreation, duration, status, transcriptionurl, languageid, mediafile, conversationthreadid);
+        SET i = i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+CALL inserttranscriptions();
+SELECT * FROM paya_transcriptions;
+
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
 -- TRUNCATE TABLE paya_modules;
