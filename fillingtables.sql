@@ -705,7 +705,48 @@ END //
 DELIMITER ;
 CALL insertmediafiles();
 SELECT * FROM paya_mediafiles;
+-- INSERT CONVERSATIONTHREADS ---------------------------------------------------------------------------------------------------------------
+DELIMITER //
 
+CREATE PROCEDURE insertconversationthreads()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_threads INT DEFAULT 20; 
+    DECLARE userid INT;
+    DECLARE starttime DATETIME;
+    DECLARE endtime DATETIME;
+    DECLARE active BIT;
+    DECLARE threadtitle VARCHAR(100);
+    DECLARE summary VARCHAR(250);
+
+    DECLARE num_users INT;
+    SET num_users = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_users`);
+
+    IF num_users = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La tabla paya_users está vacía. Ejecuta insertusers primero.';
+    END IF;
+
+    WHILE i < num_threads DO
+        SET userid = FLOOR(1 + RAND() * num_users);
+
+        SET starttime = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY); 
+        SET endtime = DATE_ADD(starttime, INTERVAL FLOOR(RAND() * 24) HOUR);
+        SET active = IF(RAND() < 0.5, 1, 0); -- Activo o inactivo aleatoriamente
+        SET threadtitle = CONCAT('Thread ', i + 1);
+        SET summary = CONCAT('Summary for thread ', i + 1);
+
+        INSERT INTO `PayAssistantDB`.`paya_conversationthreads` 
+        (`userid`, `starttime`, `endtime`, `active`, `threadtitle`, `summary`)
+        VALUES 
+        (userid, starttime, endtime, active, threadtitle, summary);
+
+        SET i = i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+CALL insertconversationthreads();
+SELECT * FROM paya_conversationthreads;
 
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
