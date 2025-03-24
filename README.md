@@ -168,7 +168,7 @@ GROUP BY
 ORDER BY 
     occurrence_ranking DESC;
 ```
-```
+
 ## Entity List
 Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf
 - Roles
