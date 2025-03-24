@@ -23,6 +23,8 @@ DROP PROCEDURE IF EXISTS insertmediatypes;
 DROP PROCEDURE IF EXISTS insertmediafiles;
 DROP PROCEDURE IF EXISTS insertconversationthreads;
 DROP PROCEDURE IF EXISTS insertaieventtypes; 
+DROP PROCEDURE IF EXISTS inserttranscriptions;
+DROP PROCEDURE IF EXISTS insertaiinteractions;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -852,6 +854,49 @@ END //
 DELIMITER ;
 CALL inserttranscriptions();
 SELECT * FROM paya_transcriptions;
+
+-- INSERT AI_INTERACTIONS -----------------------------------------------------------------------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE insertaiinteractions()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_interactions INT DEFAULT 1000; -- 1000 interacciones para poder realizar la consulta con bastantes datos
+    DECLARE transcriptionid INT;
+    DECLARE eventid INT;
+    DECLARE prompt VARCHAR(250);
+    DECLARE response VARCHAR(250);
+    DECLARE duration INT;
+    DECLARE tokensused INT;
+    DECLARE timestamp DATETIME;
+
+    DECLARE num_transcriptions INT;
+    DECLARE num_eventtypes INT;
+
+    SET num_transcriptions = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_transcriptions`);
+    SET num_eventtypes = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_aieventtypes`);
+
+    WHILE i < num_interactions DO
+        SET transcriptionid = FLOOR(1 + RAND() * num_transcriptions);
+        SET eventid = FLOOR(1 + RAND() * num_eventtypes);
+        
+        SET prompt = CONCAT('Prompt for interaction ', i + 1);
+        SET response = CONCAT('Response for interaction ', i + 1);
+        SET duration = FLOOR(RAND() * 60); 
+        SET tokensused = FLOOR(RAND() * 1000); 
+        SET timestamp = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY);
+
+        INSERT INTO `PayAssistantDB`.`paya_ai_interactions` 
+        (`transcriptionid`, `eventid`, `prompt`, `response`, `duration(s)`, `tokensused`, `timestamp`)
+        VALUES 
+        (transcriptionid, eventid, prompt, response, duration, tokensused, timestamp);
+        SET i = i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+CALL insertaiinteractions();
+SELECT * FROM paya_ai_interactions;
 
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
