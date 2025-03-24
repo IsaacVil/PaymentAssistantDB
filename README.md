@@ -5,6 +5,9 @@ This data base proyect was developed as part of the **Data Bases I** course at t
 The data base was a collaborative effort between **Isaac Villalobos** and **Carlos Ávalos**, showcasing our knowledge in data bases and the application of them in real-world scenarios.  
 Any questions or inquiries about the inner workings of the project can be directed to my personal email: IsaacVillalobosB@gmail.com.
 
+## Database creation script link:
+<a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/createtables.sql" target="_blank">PaymentAssistantDB creation script</a>
+
 ## Entity List
 Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf
 - Roles
