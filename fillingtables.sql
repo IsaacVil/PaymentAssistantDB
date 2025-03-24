@@ -19,6 +19,8 @@ DROP PROCEDURE IF EXISTS insertstates;
 DROP PROCEDURE IF EXISTS insertcities;
 DROP PROCEDURE IF EXISTS insertaddresses;
 DROP PROCEDURE IF EXISTS insertaddressasignations;
+DROP PROCEDURE IF EXISTS insertmediatypes;
+DROP PROCEDURE IF EXISTS insertmediafiles;
 -- INSERT USERS ------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE insertusers()
@@ -643,6 +645,67 @@ END //
 DELIMITER ;
 CALL insertaddressasignations();
 SELECT * FROM paya_addressasignations;
+-- INSERT MEDIATYPES ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE insertmediatypes()
+BEGIN
+    -- Insertar tipos de medios
+    INSERT INTO `PayAssistantDB`.`paya_mediatypes` 
+    (`name`, `formattype`)
+    VALUES 
+    ('Image', 'JPEG'),
+    ('Image', 'PNG'),
+    ('Video', 'MP4'),
+    ('Video', 'AVI'),
+    ('Audio', 'MP3'),
+    ('Audio', 'WAV'),
+    ('Document', 'PDF'),
+    ('Document', 'DOCX');
+END //
+
+DELIMITER ;
+CALL insertmediatypes();
+SELECT * FROM paya_mediatypes;
+-- INSERT MEDIAFILES ------------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE insertmediafiles()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_files INT DEFAULT 50; 
+    DECLARE userid INT;
+    DECLARE filename VARCHAR(60);
+    DECLARE storageurl VARCHAR(100);
+    DECLARE filesize INT;
+    DECLARE uploadedhour DATETIME;
+    DECLARE mediatypeid INT;
+    DECLARE num_users INT;
+    DECLARE num_mediatypes INT;
+
+    SET num_users = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_users`);
+    SET num_mediatypes = (SELECT COUNT(*) FROM `PayAssistantDB`.`paya_mediatypes`);
+
+    WHILE i < num_files DO
+        SET userid = FLOOR(1 + RAND() * num_users);
+        SET mediatypeid = FLOOR(1 + RAND() * num_mediatypes);
+
+        SET filename = CONCAT('file_', i + 1);
+        SET storageurl = CONCAT('https://storage.example.com/files/', filename);
+        SET filesize = FLOOR(RAND() * 1000000); -- Tamaño entre 0 y 1MB
+        SET uploadedhour = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY); 
+
+        INSERT INTO `PayAssistantDB`.`paya_mediafiles` 
+        (`userid`, `filename`, `storageurl`, `filesize`, `uploadedhour`, `mediatypeid`)
+        VALUES 
+        (userid, filename, storageurl, filesize, uploadedhour, mediatypeid);
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+CALL insertmediafiles();
+SELECT * FROM paya_mediafiles;
+
 
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE paya_users;
