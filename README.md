@@ -8,7 +8,7 @@ Any questions or inquiries about the inner workings of the project can be direct
 ## Database creation script link:
 <a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/createtables.sql" target="_blank">PaymentAssistantDB creation script</a>
 
-### Data filling script link:  
+## Data filling script link:  
 <a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/fillingtables.sql" target="_blank">PaymentAssistantDB data filling script</a>
 
 ## Query Reports
@@ -51,8 +51,40 @@ GROUP BY
 ORDER BY 
     Total_payments₡ DESC;
 ```
-
-![Results 4.1](./images/4.1-results.png)
+### Results Data Table 4.1
+| **Nombre_completo**       | **Email**                            | **Pais**   | **Total_de_pagos₡** |
+|---------------------|--------------------------------------|---------------|-----------------|
+| Christopher Foreman | ChristopherForeman384@gmail.com      | Italy         | 29,510.411      |
+| Walter Sánchez      | WalterSánchez1964@gmail.com          | Costa Rica    | 17,847.289      |
+| Carlos Wayne        | CarlosWayne231@gmail.com             | Italy         | 14,740.269      |
+| Christopher Martinez| ChristopherMartínez1724@gmail.com    | United States | 12,408.282      |
+| Rodrigo La_Cerva    | RodrigoLa_Cerva410@gmail.com         | Japan         | 10,329.515      |
+| Roberto Cheng       | RobertoCheng2143@gmail.com           | Russia        | 9,646.493       |
+| Juan Sánchez        | JuanSánchez193@gmail.com             | France        | 9,525.825       |
+| Carlos Wayne        | CarlosWayne1311@gmail.com            | Japan         | 9,390.750       |
+| Rodrigo Martinez    | RodrigoMartínez1120@gmail.com        | China         | 9,368.764       |
+| Juan Ramírez        | JuanRamírez2144@gmail.com            | Costa Rica    | 8,276.821       |
+| Ana Pérez           | AnaPérez568@gmail.com                | Costa Rica    | 7,778.139       |
+| Martina Bonilla     | MartinaBonilla420@gmail.com          | United States | 7,133.027       |
+| Roberto Pérez       | RobertoPérez1578@gmail.com           | Spain         | 6,919.466       |
+| Bruce Cheng         | BruceCheng865@gmail.com              | France        | 6,616.601       |
+| Rodrigo Castillo    | RodrigoCastillo389@gmail.com         | Russia        | 6,356.164       |
+| David López         | DavidLópez653@gmail.com              | Japan         | 6,037.675       |
+| Pabla Johnson       | PablaJohnson274@gmail.com            | Italy         | 5,711.340       |
+| José Fernández      | JoséFernández265@gmail.com           | Costa Rica    | 5,581.938       |
+| Walter Soprano      | WalterSoprano569@gmail.com           | France        | 5,553.302       |
+| Gregory Hernández   | GregoryHernández453@gmail.com        | France        | 5,502.034       |
+| Ana Hernández       | AnaHernández1261@gmail.com           | China         | 5,192.073       |
+| Chase Murdock       | ChaseMurdock1491@gmail.com           | France        | 3,340.308       |
+| Juan Cheng          | JuanCheng829@gmail.com               | Russia        | 2,561.610       |
+| David Hernández     | DavidHernández1675@gmail.com         | Russia        | 2,363.015       |
+| María Martínez      | MaríaMartínez1869@gmail.com          | Italy         | 1,874.102       |
+| Viviana White       | VivianaWhite772@gmail.com            | Italy         | 1,422.002       |
+| Jane Villalobos     | JaneVillalobos670@gmail.com          | Russia        | 651.758         |
+| Jane Ramírez        | JaneRamírez1327@gmail.com            | China         | 640.563         |
+| Ana Moltisanti      | AnaMoltisanti2005@gmail.com          | China         | 527.209         |
+| Miguel Johnson      | MiguelJohnson1491@gmail.com          | Italy         | 74.674          |
+| Jane Sánchez        | JaneSánchez1231@gmail.com            | Russia        | 63.367          |
 
 
 ### 4.2 List all people with full name and email who have less than 15 days until their next subscription payment (13+ records)
@@ -94,8 +126,27 @@ END//
 DELIMITER ;
 CALL NearPaymentsina15daysWindow();
 ```
+### Results data table 4.2
 
-![Results 4.2](./images/4.2-results.png)
+
+| id_usuario | Nombre  | Apellido   | Email                        | Pagos_Total | Dias_Hasta_El_Sgte_Pago | Pago_Mas_Cercano        |
+|------------|---------|------------|------------------------------|-------------|-------------------------|-------------------------|
+| 6          | José    | González   | JoseGonzález372@gmail.com    | 278.00      | 5                       | 2025-03-30 02:18:48     |
+| 7          | Pablo   | Rodríguez  | PabloRodríguez391@gmail.com  | 511.00      | 8                       | 2025-04-02 02:18:48     |
+| 17         | Jane    | Murdock    | JaneMurdock490@gmail.com     | 976.00      | 1                       | 2025-03-26 02:18:48     |
+| 22         | María   | White      | MaríaWhite213@gmail.com      | 465.00      | 10                      | 2025-04-04 02:18:48     |
+| 28         | Martina | Soprano    | MartinaSoprano1907@gmail.com | 153.00      | 10                      | 2025-04-04 02:18:48     |
+| 29         | Martina | Rodríguez  | MartinaRodríguez556@gmail.com| 330.00      | 8                       | 2025-04-02 02:18:48     |
+| 30         | Isaac   | White      | IsaacWhite326@gmail.com      | 252.00      | 1                       | 2025-03-26 02:18:48     |
+| 33         | Carmela | La_Cerva   | CarmelaLa_Cerva2107@gmail.com| 807.00      | 9                       | 2025-04-03 02:18:48     |
+| 35         | Arturo  | López      | ArturoLópez2112@gmail.com    | 252.00      | 1                       | 2025-03-26 02:18:48     |
+| 38         | Matt    | La_Cerva   | MattLa_Cerva910@gmail.com    | 55.00       | 3                       | 2025-03-28 02:18:48     |
+| 43         | Carlos  | Murdock    | CarlosMurdock1815@gmail.com  | 291.00      | 14                      | 2025-04-08 02:18:48     |
+| 48         | María   | Fernández  | MaríaFernández1504@gmail.com | 22.00       | 3                       | 2025-03-28 02:18:48     |
+| 54         | Matt    | Fernández  | MattFernández1547@gmail.com  | 603.00      | 12                      | 2025-04-06 02:18:48     |
+| 57         | Miguel  | Villalobos | MiguelVillalobos464@gmail.com| 511.00      | 8                       | 2025-04-02 02:18:48     |
+| 59         | José    | Villalobos | JoséVillalobos1897@gmail.com | 628.00      | 5                       | 2025-03-30 02:18:48     |
+| 60         | Gregory | Castillo   | GregoryCastillo1082@gmail.com| 278.00      | 5                       | 2025-03-30 02:18:48     |
 
 ### 4.3 Ranking of top 15 most active users and top 15 least active users (15 and 15 records)
 
@@ -126,7 +177,25 @@ DELIMITER ;
 CALL Top15ActiveUsers();
 ```
 
-![Results 4.3 (Activos)](./images/4.3-active-results.png)
+### Results data table 4.3 Active Users:
+
+| id_usuario | Nombre | Apellido | Transacciones_Totales |
+|---------|------------|-----------|--------------------|
+| 19      | Christopher | Foreman   | 64                 |
+| 23      | Walter     | Sánchez   | 58                 |
+| 35      | Christopher | Martínez  | 46                 |
+| 18      | Pabla      | Johnson   | 45                 |
+| 25      | Rodrigo    | La_Cerva  | 45                 |
+| 41      | Carlos     | Wayne     | 42                 |
+| 42      | Bruce      | Cheng     | 40                 |
+| 37      | Jane       | Soprano   | 38                 |
+| 21      | Eric       | Pérez     | 36                 |
+| 49      | Sofia      | Sánchez   | 35                 |
+| 2       | Roberto    | Cheng     | 34                 |
+| 14      | Ana        | Hernández | 31                 |
+| 36      | Roberto    | Rodríguez | 29                 |
+| 7       | Juan       | Cheng     | 27                 |
+| 34      | Rodrigo    | Castillo  | 25                 |
 
 #### Least active users query:
 <a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/(4-3%20PART%202)%20TOP%2015%20INACTIVE.sql" target="_blank">Top 15 inactive users query</a>
@@ -154,8 +223,26 @@ END//
 DELIMITER ;
 CALL Top15InactiveUsers();
 ```
+### Results data table 4.3 Inactive Users:
 
-![Results 4.3 (Inactivos)](./images/4.3-inactive-results.png)
+
+| id_usuario | Nombre | Apellido  | Transacciones_Totales |
+|---------|------------|------------|--------------------|
+| 4       | Carlos     | White      | 5                  |
+| 10      | Pedro      | Bonilla    | 6                  |
+| 43      | Jane       | Villalobos | 6                  |
+| 50      | Viviana    | Rodriguez  | 6                  |
+| 27      | Miguel     | Johnson    | 8                  |
+| 45      | Jane       | Ramírez    | 9                  |
+| 39      | Martina    | Bonilla    | 9                  |
+| 8       | David      | Hernández  | 10                 |
+| 5       | Roberto    | Gualtieri  | 11                 |
+| 12      | Roberto    | Pérez      | 11                 |
+| 31      | Carlos     | Wayne      | 11                 |
+| 3       | Ana        | Moltisanti | 12                 |
+| 13      | Rodrigo    | Cheng      | 12                 |
+| 47      | Juan       | Ramírez    | 12                 |
+| 32      | Jane       | Sánchez    | 14                 |
 
 ### 4.4 Determine which analyses have the most AI failures, ranking each problem by occurrence count within a date range (30+ records)
 <a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/(4-4).sql" target="_blank">AI failure analysis query</a>
@@ -178,7 +265,46 @@ ORDER BY
     occurrence_ranking DESC;
 ```
 
-![Results 4.4](./images/4.4-results.png)
+### Results data table 4.4:
+
+| **eventid** | **descripción_del_error**                           | **ranking_ocurrencias**  |
+|------|-----------------------------------------------------|----------------|
+| 24     | Fallo en la aplicación de un descuento mencionado por el usuario | 30  |
+| 31     | Error en la interpretación de la solicitud de historial de transacciones | 25  |
+| 34     | Fallo en la activación de una nueva tarjeta          | 23  |
+| 18     | Fallo en la autenticación biométrica adicional requerida | 23  |
+| 37     | Error en la interpretación de la solicitud de pago fraccionado | 22  |
+| 39     | Error en la interpretación de la solicitud de pago en efectivo | 21  |
+| 15     | Error en la interpretación de la dirección de facturación | 21  |
+| 17     | Error en la interpretación del código de seguridad de la tarjeta | 21  |
+| 25     | Error en la interpretación de la divisa para conversión | 21  |
+| 8      | Transacción monetaria fallida debido a un error en la validación de la IA | 20  |
+| 12     | Fallo en la conexión con el servidor de procesamiento de pagos | 20  |
+| 33     | Error en la interpretación de la solicitud de bloqueo de tarjeta | 20  |
+| 32     | Fallo en la generación de la alerta de límite de gasto excedido | 20  |
+| 19     | Error en la interpretación de la solicitud de pago recurrente | 20  |
+| 41     | Error en la interpretación de la solicitud de pago con criptomonedas | 19  |
+| 38     | Fallo en la división del pago entre múltiples cuentas | 19  |
+| 27     | Error en la interpretación de la solicitud de pago a un contacto | 18  |
+| 23     | Error en la interpretación de la solicitud de límite de gasto | 17  |
+| 26     | Fallo en la conversión de moneda debido a tasas no actualizadas | 17  |
+| 30     | Fallo en la generación de la alerta de pago atrasado | 17  |
+| 13     | Error en la generación del comprobante de pago      | 17  |
+| 21     | Error en la interpretación de la solicitud de reembolso | 16  |
+| 20     | Fallo en la cancelación de un pago recurrente       | 16  |
+| 5      | Autenticación de usuario fallida debido a una voz no reconocida | 16  |
+| 29     | Error en la interpretación de la referencia de pago | 15  |
+| 40     | Fallo en la generación del código QR para pago      | 15  |
+| 9      | Error en la detección de la moneda especificada por el usuario | 15  |
+| 35     | Error en la interpretación de la solicitud de cambio de PIN | 15  |
+| 28     | Fallo en la verificación del destinatario del pago  | 14  |
+| 36     | Fallo en la aplicación de una promoción mencionada por el usuario | 14  |
+| 14     | Fallo en la actualización del saldo después del pago | 13  |
+| 22     | Fallo en la generación del reporte de transacciones mensuales | 12  |
+| 10     | Fallo en la validación de la fecha de pago proporcionada por el usuario | 11  |
+| 11     | Error en la interpretación de la descripción del pago | 11  |
+| 2      | Procesamiento de pago fallido debido a un error en el reconocimiento de voz | 11  |
+| 16     | Fallo en la verificación de la tarjeta de crédito mencionada por el usuario | 7   |
 
 ## Entity List
 Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf
