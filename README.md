@@ -52,6 +52,9 @@ ORDER BY
     Total_payments₡ DESC;
 ```
 
+![Results 4.1](./images/4.1-results.png)
+
+
 ### 4.2 List all people with full name and email who have less than 15 days until their next subscription payment (13+ records)
 <a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/(4-2)%2015%20Days%20until%20payment.sql" target="_blank">Users with upcoming payments in 15 days query</a>
 
@@ -92,6 +95,8 @@ DELIMITER ;
 CALL NearPaymentsina15daysWindow();
 ```
 
+![Results 4.2](./images/4.2-results.png)
+
 ### 4.3 Ranking of top 15 most active users and top 15 least active users (15 and 15 records)
 
 #### Most active users query:
@@ -121,6 +126,8 @@ DELIMITER ;
 CALL Top15ActiveUsers();
 ```
 
+![Results 4.3 (Activos)](./images/4.3-active-results.png)
+
 #### Least active users query:
 <a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/(4-3%20PART%202)%20TOP%2015%20INACTIVE.sql" target="_blank">Top 15 inactive users query</a>
 
@@ -148,6 +155,8 @@ DELIMITER ;
 CALL Top15InactiveUsers();
 ```
 
+![Results 4.3 (Inactivos)](./images/4.3-inactive-results.png)
+
 ### 4.4 Determine which analyses have the most AI failures, ranking each problem by occurrence count within a date range (30+ records)
 <a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/(4-4).sql" target="_blank">AI failure analysis query</a>
 
@@ -168,6 +177,8 @@ GROUP BY
 ORDER BY 
     occurrence_ranking DESC;
 ```
+
+![Results 4.4](./images/4.4-results.png)
 
 ## Entity List
 Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf
