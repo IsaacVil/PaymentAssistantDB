@@ -285,7 +285,7 @@ Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf
 ![image](https://github.com/user-attachments/assets/44214d39-be25-4e80-a579-3adbe5fb6995)
 ![image](https://github.com/user-attachments/assets/1a83ba4f-cf78-43e8-a766-91d36782a303)
 ![image](https://github.com/user-attachments/assets/af73e766-21e1-473f-88d4-20e2b984f758) This is where the transcript link is stored.
-- From OpenAi we took the way they manage tokens, prompts and responses. For more info: https://platform.openai.com/docs/api-reference/completions/create.
+- From OpenAi we took the way they manage tokens, prompts, responses, secretkeys, porcent of certainty. For more info: https://platform.openai.com/docs/api-reference/completions/create.
 ![image](https://github.com/user-attachments/assets/95f02c40-40f4-4e64-92f4-d9b41e89681a)
 
 
