@@ -30,7 +30,7 @@ DELIMITER //
 CREATE PROCEDURE insertusers()
 BEGIN
     DECLARE i INT DEFAULT 0;
-    DECLARE num_users INT DEFAULT 50; 
+    DECLARE num_users INT DEFAULT 60; 
 	DECLARE nombreusado VARCHAR(45);
 	DECLARE apellidousado VARCHAR(45);
     DECLARE enablebit BIT; 
@@ -204,11 +204,11 @@ BEGIN
         FROM `PayAssistantDB`.`paya_schedules` 
         ORDER BY RAND() 
         LIMIT 1;
-        SET deletedbit = IF(RAND() < 0.6, 0, 1); 
+        SET deletedbit = IF(RAND() < 0.8, 0, 1); 
         INSERT INTO `PayAssistantDB`.`paya_scheduledetails` 
         (`deleted`, `basedate`, `datepart`, `lastexecution`, `nextexecution`, `scheduleid`)
         VALUES
-        (deletedbit, DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY), IF(FLOOR(RAND() * 2) = 0, 'MM', 'YY'), DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY),
+        (deletedbit, DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 365) DAY), IF(FLOOR(RAND() * 2) = 0, 'MM', 'YY'), DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 26) DAY),
         DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 45) DAY), random_scheduleid);
         SET i = i + 1;
     END WHILE;
@@ -261,7 +261,7 @@ BEGIN
         SELECT `userid`, `creationdate` INTO user_id, creation_date
         FROM `PayAssistantDB`.`paya_users` ORDER BY RAND() LIMIT 1;
         SET random_date = DATE_ADD(creation_date, INTERVAL FLOOR(RAND() * (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(creation_date))) SECOND);
-        SET enablebit = IF(RAND() < 0.4, 0, 1); 
+        SET enablebit = IF(RAND() < 0.2, 0, 1); 
         SELECT `planpriceid` INTO plan_price_id FROM `PayAssistantDB`.`paya_planprices` ORDER BY RAND() LIMIT 1;
         INSERT INTO `PayAssistantDB`.`paya_plans` 
         (`adquisition`, `enabled`, `userid`, `planpriceid`)
@@ -350,7 +350,7 @@ BEGIN
         SELECT `paymentmethodsid` INTO random_paymentmethodsid FROM `PayAssistantDB`.`paya_paymentmethods` ORDER BY RAND() LIMIT 1;
         SET random_token = sha2(CONCAT('token_api_supersecret_num_', FLOOR(RAND() * 100000000)), 256);  -- SHA256
         SET exp_token_date = DATE_ADD(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY);
-        SET random_enable = IF(RAND() < 0.6, 1, 0);
+        SET random_enable = IF(RAND() < 0.7, 1, 0);
         SET random_name = CONCAT('PaymentMethod_', FLOOR(RAND() * 100));
         INSERT INTO `PayAssistantDB`.`paya_availablemethods`
         (`name`, `apiurl`, `token`, `expTokenDate`, `enable`, `userid`, `paymentmethodsid`)
