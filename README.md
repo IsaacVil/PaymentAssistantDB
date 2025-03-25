@@ -281,4 +281,12 @@ Link: https://github.com/IsaacVil/PaymentAssistantDB/blob/main/DB-PAY-A.pdf
 ![image](https://github.com/user-attachments/assets/d095291b-787b-4d1b-bf0c-3fffb0d07f97)
 ![image](https://github.com/user-attachments/assets/4b82c30f-7fc9-4c9e-b28d-6800ac8337d3)
 ![image](https://github.com/user-attachments/assets/33de42a9-223e-434a-93bf-e9f2b833f35e)
+- From Amazon AWS we took a lot of inspiration for transcriptions and how they storage the data left of the transcriptions (link of amazon servers and in json format).
+![image](https://github.com/user-attachments/assets/44214d39-be25-4e80-a579-3adbe5fb6995)
+![image](https://github.com/user-attachments/assets/1a83ba4f-cf78-43e8-a766-91d36782a303)
+![image](https://github.com/user-attachments/assets/af73e766-21e1-473f-88d4-20e2b984f758) This is where the transcript link is stored.
+- From OpenAi we took the way they manage tokens, prompts and responses. For more info: https://platform.openai.com/docs/api-reference/completions/create.
+![image](https://github.com/user-attachments/assets/95f02c40-40f4-4e64-92f4-d9b41e89681a)
+
+
 
