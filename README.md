@@ -11,6 +11,9 @@ Any questions or inquiries about the inner workings of the project can be direct
 ## Data filling script link:  
 <a href="https://github.com/IsaacVil/PaymentAssistantDB/blob/main/fillingtables.sql" target="_blank">PaymentAssistantDB data filling script</a>
 
+## Diagram Link:  
+https://github.com/IsaacVil/PaymentAssistantDB/blob/main/Diagrama.pdf
+
 ## Query Reports
 
 ### 4.1 List all active platform users with full name, email, country of origin, and total subscription payments in colones from 2024 to present (20+ records)
